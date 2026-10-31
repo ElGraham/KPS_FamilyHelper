@@ -62,8 +62,11 @@ header.top .row{max-width:880px;margin:0 auto;display:flex;align-items:center;ga
 header.top h1{font-size:1.2rem;margin:0;line-height:1.2}
 header.top .row>div{min-width:0}
 header.top .updated{font-weight:700;opacity:1}
+.hbtns{display:flex;gap:.5rem;align-items:center;flex:none}
+a.hbtn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+@media (max-width:520px){header.top .row{flex-wrap:wrap}.hbtns{flex-basis:100%;justify-content:flex-end}}
 header.top .row{gap:.6rem}
-@media (max-width:420px){header.top .hl{display:none}header.top p{font-size:.76rem}}
+@media (max-width:420px){header.top p{font-size:.76rem}}
 header.top p{margin:.1rem 0 0;font-size:.82rem;opacity:.92}
 .hbtn{min-height:44px;min-width:44px;padding:.4rem .8rem;border-radius:10px;border:2px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
 :root[data-theme="contrast"] .hbtn{border-color:#ffe600}
@@ -201,7 +204,10 @@ legend{font-weight:700;padding:0 .3rem}
         <p class="updated">Last updated: 31 October 2026</p>
       </div>
     </div>
-    <button class="hbtn" id="openA11y" type="button" aria-haspopup="dialog" aria-label="Display and accessibility settings">Aa<span class="hl"> Display</span></button>
+    <div class="hbtns">
+      <a class="hbtn" id="thanksTop" href="https://buymeacoffee.com/kps_parenthelper" target="_blank" rel="noopener noreferrer" aria-label="Say thanks (opens Buy Me a Coffee in a new tab)" title="A personal thank-you to the parent who built this app">☕ Say thanks</a>
+      <button class="hbtn" id="openA11y" type="button" aria-haspopup="dialog" aria-label="Accessibility and display settings"><span aria-hidden="true">Aa</span> Accessibility</button>
+      </div>
   </div>
 </header>
 
@@ -276,6 +282,11 @@ legend{font-weight:700;padding:0 .3rem}
       <ul class="list" id="linkList"></ul>
     </div>
     <div class="card">
+      <h3>Say thanks</h3>
+      <p class="small muted" style="margin-top:0">This app was built by a parent, not by the school or the PTA. If it has saved you time, you can say thanks with a coffee. It’s a personal thank-you to the person who built it, not a donation to the school or the PTA, and it’s entirely optional.</p>
+      <a class="btn" style="display:inline-block;text-decoration:none" href="https://buymeacoffee.com/kps_parenthelper" target="_blank" rel="noopener noreferrer">☕ Say thanks (opens Buy Me a Coffee)</a>
+    </div>
+    <div class="card">
       <h3>Want something added to this app?</h3>
       <p class="small muted" style="margin-top:0">Tell us about a missing letter or a mistake and it will be looked at when the app is next updated.</p>
       <button class="btn ghost" type="button" data-suggest>✉ Ask for something to be added</button>
@@ -307,7 +318,7 @@ legend{font-weight:700;padding:0 .3rem}
 </dialog>
 
 <dialog id="a11y" aria-labelledby="a11yTitle">
-  <h2 id="a11yTitle">Display &amp; accessibility</h2>
+  <h2 id="a11yTitle">Accessibility &amp; display</h2>
   <p class="muted small" style="margin-top:0">Your choices are saved on this device where your browser allows it.</p>
 
   <fieldset>
