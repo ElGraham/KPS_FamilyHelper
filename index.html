@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>KPS Parent Helper</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Lexend:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f5f3ee; --surface:#ffffff; --text:#1c1c24; --muted:#4f5565; --primary:#14284b; --on-primary:#ffffff;
+  --accent:#7a0c24; --border:#cdd1dc; --chip:#e4e9f4; --warn-bg:#fff4d6; --warn-text:#4a3600; --ok:#14663a;
+  --header-bg:#14284b; --gold:#d4af37; --header-text:#ffffff; --focus:#0b57d0; --scale:1;
+  --font:"Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme]){
+    --bg:#12141c; --surface:#1b1f2b; --text:#eceef5; --muted:#aab0c2; --primary:#a9bcff; --on-primary:#10131c;
+    --accent:#ffa3a8; --border:#363c50; --chip:#272d43; --warn-bg:#3b3112; --warn-text:#ffe9a8; --ok:#7ee0a5;
+    --header-bg:#0c1a33; --header-text:#ffffff; --focus:#8ab4ff; color-scheme:dark;
+  }
+}
+:root[data-theme="light"]{color-scheme:light}
+:root[data-theme="dark"]{
+  --bg:#12141c; --surface:#1b1f2b; --text:#eceef5; --muted:#aab0c2; --primary:#a9bcff; --on-primary:#10131c;
+  --accent:#ffa3a8; --border:#363c50; --chip:#272d43; --warn-bg:#3b3112; --warn-text:#ffe9a8; --ok:#7ee0a5;
+  --header-bg:#0c1a33; --header-text:#ffffff; --focus:#8ab4ff; color-scheme:dark;
+}
+:root[data-theme="contrast"]{
+  --bg:#000000; --surface:#000000; --text:#ffffff; --muted:#ffffff; --primary:#ffe600; --on-primary:#000000;
+  --accent:#ffe600; --border:#ffffff; --chip:#000000; --warn-bg:#000000; --warn-text:#ffe600; --ok:#7dff9b;
+  --header-bg:#000000; --header-text:#ffe600; --focus:#00e5ff; color-scheme:dark;
+}
+:root[data-theme="warm"]{
+  --bg:#fbf1d9; --surface:#fff8e6; --text:#2a2418; --muted:#574d36; --primary:#1b2a5c; --on-primary:#ffffff;
+  --accent:#8a1f24; --border:#d3c391; --chip:#f0e2b8; --warn-bg:#f6dfa0; --warn-text:#3c2d00; --ok:#14663a;
+  --header-bg:#7a0c24; --header-text:#ffffff; --focus:#0b57d0; color-scheme:light;
+}
+:root[data-font="lexend"]{--font:"Lexend","Atkinson Hyperlegible",system-ui,Arial,sans-serif}
+:root[data-font="system"]{--font:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+
+*,*::before,*::after{box-sizing:border-box}
+html{font-size:calc(17px * var(--scale,1));-webkit-text-size-adjust:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.6;min-height:100vh}
+:root[data-spacing="roomy"] body{line-height:1.95;letter-spacing:.04em;word-spacing:.14em}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+:root[data-motion="reduce"] *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+
+a{color:var(--primary);text-underline-offset:.15em}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px;border-radius:4px}
+.skip{position:absolute;left:-999px;top:0;background:var(--primary);color:var(--on-primary);padding:.6rem 1rem;z-index:50;border-radius:0 0 8px 0}
+.skip:focus{left:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+header.top{background:var(--header-bg);color:var(--header-text);padding:.8rem 1rem .75rem;border-bottom:4px solid var(--gold,#d4af37);box-shadow:0 4px 0 var(--accent)}
+header.top .brand{display:flex;align-items:center;gap:.8rem;min-width:0}
+header.top .badge{height:3.4rem;width:auto;flex:none;display:block}
+header.top .row{max-width:880px;margin:0 auto;display:flex;align-items:center;gap:.8rem;justify-content:space-between}
+header.top h1{font-size:1.2rem;margin:0;line-height:1.2}
+header.top .row>div{min-width:0}
+header.top .updated{font-weight:700;opacity:1}
+header.top .row{gap:.6rem}
+@media (max-width:420px){header.top .hl{display:none}header.top p{font-size:.76rem}}
+header.top p{margin:.1rem 0 0;font-size:.82rem;opacity:.92}
+.hbtn{min-height:44px;min-width:44px;padding:.4rem .8rem;border-radius:10px;border:2px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
+:root[data-theme="contrast"] .hbtn{border-color:#ffe600}
+
+main{max-width:880px;margin:0 auto;padding:1rem 1rem 7.5rem}
+.panel[hidden]{display:none}
+.panel>h2{font-size:1.2rem;margin:.2rem 0 .7rem;color:var(--accent)}
+.dayhead{color:var(--accent)!important}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1rem;margin:0 0 .9rem}
+:root[data-theme="contrast"] .card{border-width:2px}
+.card h3{margin:.1rem 0 .4rem;font-size:1.05rem;color:var(--primary)}
+.muted{color:var(--muted)}
+.small{font-size:.86rem}
+.notice{background:var(--warn-bg);color:var(--warn-text);border-radius:12px;padding:.7rem .9rem;font-size:.9rem;margin:0 0 .9rem}
+:root[data-theme="contrast"] .notice{border:2px solid #ffe600}
+
+.btn{min-height:44px;padding:.55rem 1rem;border-radius:10px;border:2px solid var(--primary);background:var(--primary);color:var(--on-primary);font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--primary)}
+.btn.small{min-height:40px;padding:.3rem .75rem;font-size:.9rem}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.chip{min-height:44px;padding:.35rem .85rem;border-radius:999px;border:1.5px solid var(--border);background:var(--chip);color:var(--text);font:inherit;cursor:pointer;text-align:left}
+.chip[aria-pressed="true"]{background:var(--primary);color:var(--on-primary);border-color:var(--primary);font-weight:700}
+.chips{display:flex;flex-wrap:wrap;gap:.45rem;margin:.4rem 0}
+.tag{display:inline-block;font-size:.75rem;padding:.1rem .55rem;border-radius:999px;background:var(--chip);color:var(--text);border:1px solid var(--border);margin:0 .3rem .3rem 0}
+.tag.deadline{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:700}
+:root[data-theme="contrast"] .tag.deadline{color:#000}
+.tag.unofficial{background:var(--warn-bg);color:var(--warn-text)}
+
+details.years{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.2rem .9rem;margin:0 0 .9rem}
+details.years>summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:700;list-style-position:inside}
+details.years .chips{padding-bottom:.6rem}
+details.years .chip{min-width:3rem;text-align:center}
+
+/* chat */
+.log{display:flex;flex-direction:column;gap:.7rem;margin:.6rem 0}
+.msg{max-width:100%;border-radius:14px;padding:.75rem .95rem;border:1px solid var(--border);background:var(--surface);overflow-wrap:anywhere}
+.msg.me{background:var(--primary);color:var(--on-primary);align-self:flex-end;max-width:92%;border-color:var(--primary)}
+.msg .body p{margin:.25rem 0 .55rem}
+.msg .body ul{margin:.2rem 0 .6rem;padding-left:1.3rem}
+.msg .tools{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.msg .src{margin-top:.5rem;font-size:.85rem}
+.msg .src button{min-height:36px;margin:.15rem .3rem .15rem 0;padding:.1rem .65rem;border-radius:999px;border:1px solid var(--border);background:var(--chip);color:var(--text);font:inherit;cursor:pointer;font-size:.82rem}
+.composer{display:flex;gap:.5rem;align-items:flex-end;margin-top:.7rem}
+.composer textarea{flex:1;min-height:52px;max-height:200px;resize:vertical;padding:.6rem .8rem;border-radius:12px;border:2px solid var(--border);background:var(--surface);color:var(--text);font:inherit}
+.iconbtn{min-height:52px;min-width:52px;border-radius:12px;border:2px solid var(--primary);background:transparent;color:var(--primary);font-size:1.2rem;cursor:pointer}
+.iconbtn[aria-pressed="true"]{background:var(--primary);color:var(--on-primary)}
+.dots::after{content:"…"}
+
+/* search */
+.searchbar{display:flex;gap:.5rem;margin-bottom:.5rem}
+.searchbar input{flex:1;min-height:52px;padding:.6rem .85rem;border-radius:12px;border:2px solid var(--border);background:var(--surface);color:var(--text);font:inherit}
+.result{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.85rem 1rem;margin:0 0 .7rem}
+.result h3{margin:0 0 .3rem;font-size:1.02rem}
+.result .txt{white-space:pre-line;overflow-wrap:anywhere;margin:.3rem 0}
+.result mark{background:#ffe27a;color:#000;border-radius:3px;padding:0 .1em}
+:root[data-theme="contrast"] .result mark{background:#ffe600}
+.result.flash{outline:3px solid var(--accent)}
+.meta{font-size:.8rem;color:var(--muted)}
+
+/* events */
+.dayhead{margin:1.1rem 0 .4rem;font-size:1rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.ev{display:flex;gap:.8rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.75rem .9rem;margin:0 0 .6rem}
+.ev.past{opacity:.6}
+.ev .date{flex:0 0 4.2rem;text-align:center;border-radius:10px;background:var(--primary);color:var(--on-primary);padding:.3rem .2rem;align-self:flex-start}
+.ev .date b{display:block;font-size:1.5rem;line-height:1.1}
+.ev .date span{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em}
+.ev .info{flex:1;min-width:0;overflow-wrap:anywhere}
+.ev h3{margin:0 0 .15rem;font-size:1rem}
+.ev .when{font-size:.88rem;color:var(--muted)}
+
+/* contacts */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:.8rem}
+.contact a.big{display:flex;align-items:center;min-height:48px;font-weight:700;font-size:1.02rem;overflow-wrap:anywhere}
+.list{list-style:none;margin:0;padding:0}
+.list li{border-top:1px solid var(--border);padding:.5rem 0;overflow-wrap:anywhere}
+.list li:first-child{border-top:0}
+
+/* forms */
+label{font-weight:700;display:block;margin:.6rem 0 .2rem}
+input[type=text],input[type=date],textarea,select{width:100%;min-height:48px;padding:.55rem .75rem;border-radius:10px;border:2px solid var(--border);background:var(--surface);color:var(--text);font:inherit}
+textarea{min-height:110px}
+.yrs{display:flex;flex-wrap:wrap;gap:.4rem;margin:.3rem 0}
+.yrs label{font-weight:400;margin:0;display:inline-flex;align-items:center;gap:.3rem;min-height:44px;padding:0 .6rem;border:1.5px solid var(--border);border-radius:999px;background:var(--chip)}
+.yrs input{width:1.2rem;height:1.2rem}
+
+/* nav */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--surface);border-top:2px solid var(--border);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom,0px)}
+nav.tabs .in{display:flex;width:100%;max-width:880px}
+nav.tabs button{flex:1;min-height:62px;border:0;background:transparent;color:var(--muted);font:inherit;font-size:.78rem;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.1rem;padding:.3rem .1rem}
+nav.tabs button .ic{font-size:1.35rem;line-height:1}
+nav.tabs button[aria-selected="true"]{color:var(--primary);font-weight:700;box-shadow:inset 0 4px 0 var(--accent)}
+
+/* dialog */
+dialog{border:2px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text);max-width:560px;width:calc(100% - 1.6rem);padding:1rem 1.1rem;max-height:90vh;overflow:auto}
+dialog::backdrop{background:rgba(0,0,0,.55)}
+dialog h2{margin:.1rem 0 .5rem;font-size:1.2rem}
+fieldset{border:1px solid var(--border);border-radius:12px;margin:.6rem 0;padding:.5rem .8rem .7rem}
+legend{font-weight:700;padding:0 .3rem}
+.opt{display:flex;align-items:center;gap:.5rem;min-height:44px}
+.opt input{width:1.3rem;height:1.3rem;flex:none}
+.opt label{margin:0;font-weight:400}
+.sizectl{display:flex;align-items:center;gap:.6rem}
+.sizectl output{min-width:3.5rem;text-align:center;font-weight:700}
+.empty{color:var(--muted);padding:.6rem 0}
+@media print{nav.tabs,header.top .hbtn,.composer,.chips,details.years{display:none!important}main{padding-bottom:1rem}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<header class="top">
+  <div class="row">
+    <div class="brand">
+      <img class="badge" src="data:image/png;base64,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" alt="Kings Priory School badge" width="149" height="196">
+      <div>
+        <h1>KPS Parent Helper</h1>
+        <p>Made by parents · not an official school service</p>
+        <p class="updated">Last updated: 31 October 2026</p>
+      </div>
+    </div>
+    <button class="hbtn" id="openA11y" type="button" aria-haspopup="dialog" aria-label="Display and accessibility settings">Aa<span class="hl"> Display</span></button>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <details class="years" id="yearsBox">
+    <summary id="yearsSummary">Which year group(s) are your children in? (optional)</summary>
+    <p class="muted small" style="margin:.2rem 0">Pick as many as you like. We’ll show the most relevant dates and answers first.</p>
+    <div class="chips" id="yearChips" role="group" aria-label="Year groups"></div>
+  </details>
+
+  <!-- ASK -->
+  <section class="panel" id="p-ask" role="tabpanel" aria-labelledby="t-ask">
+    <h2 id="h-ask">Ask a question</h2>
+    <div class="notice" id="aiNotice">Type a question and you’ll get the most relevant passages from the school’s letters and newsletters, with the source and date shown. Dates can change, so please check Arbor or the school before relying on a deadline.</div>
+    <div class="card" id="soon">
+      <h3>Coming up soon</h3>
+      <div id="soonList"></div>
+    </div>
+    <div class="card">
+      <h3>Quick questions</h3>
+      <div class="chips" id="quickChips"></div>
+    </div>
+    <div class="log" id="log" role="log" aria-live="polite" aria-label="Conversation"></div>
+    <div class="composer">
+      <label for="q" class="sr">Type your question</label>
+      <textarea id="q" rows="2" placeholder="e.g. When is parents’ evening for Year 8?" enterkeyhint="send"></textarea>
+      <button class="iconbtn" id="mic" type="button" aria-pressed="false" aria-label="Speak your question" hidden>🎤</button>
+      <button class="btn" id="send" type="button">Ask</button>
+    </div>
+    <div style="margin-top:.5rem;display:flex;gap:.5rem;flex-wrap:wrap">
+      <button class="btn ghost small" id="clear" type="button" hidden>Clear conversation</button>
+    </div>
+    <div class="card" style="margin-top:1.1rem">
+      <h3>Something missing or wrong?</h3>
+      <p class="small muted" style="margin-top:0">Can’t find a letter, or spotted an out-of-date date? Ask for it to be added or fixed.</p>
+      <button class="btn ghost" type="button" data-suggest>✉ Ask for something to be added</button>
+    </div>
+  </section>
+
+  <!-- SEARCH -->
+  <section class="panel" id="p-search" role="tabpanel" aria-labelledby="t-search" hidden>
+    <h2 id="h-search">Search the school documents</h2>
+    <p class="muted small" style="margin-top:0">Type a few words, or browse by topic. Every result shows which letter it came from and its date.</p>
+    <form class="searchbar" id="searchForm" role="search">
+      <label for="sq" class="sr">Search</label>
+      <input id="sq" type="search" placeholder="e.g. phone pouch, lunch, Sparx, wreath" autocomplete="off" enterkeyhint="search">
+      <button class="btn" type="submit">Search</button>
+    </form>
+    <div class="chips" id="topicChips" role="group" aria-label="Filter by topic"></div>
+    <div id="results" aria-live="polite"></div>
+  </section>
+
+  <!-- DATES -->
+  <section class="panel" id="p-dates" role="tabpanel" aria-labelledby="t-dates" hidden>
+    <h2 id="h-dates">Coming up</h2>
+    <div style="display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem">
+      <button class="chip" id="onlyMine" type="button" aria-pressed="false">Only my year groups</button>
+      <button class="chip" id="showPast" type="button" aria-pressed="false">Show past dates</button>
+      <button class="btn ghost small" id="addAll" type="button">Add all shown to calendar (.ics)</button>
+    </div>
+    <p class="muted small" id="datesNote" style="margin:.2rem 0 .6rem"></p>
+    <div id="dates"></div>
+  </section>
+
+  <!-- CONTACTS -->
+  <section class="panel" id="p-contacts" role="tabpanel" aria-labelledby="t-contacts" hidden>
+    <h2 id="h-contacts">Who to contact</h2>
+    <div class="grid" id="contactGrid"></div>
+    <div class="card" style="margin-top:.9rem">
+      <h3>Handy links</h3>
+      <ul class="list" id="linkList"></ul>
+    </div>
+    <div class="card">
+      <h3>Want something added to this app?</h3>
+      <p class="small muted" style="margin-top:0">Tell us about a missing letter or a mistake and it will be looked at when the app is next updated.</p>
+      <button class="btn ghost" type="button" data-suggest>✉ Ask for something to be added</button>
+    </div>
+  </section>
+
+</main>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="in" role="tablist" aria-label="Sections">
+    <button role="tab" id="t-ask" aria-controls="p-ask" aria-selected="true" data-tab="ask" type="button"><span class="ic" aria-hidden="true">💬</span>Ask</button>
+    <button role="tab" id="t-search" aria-controls="p-search" aria-selected="false" data-tab="search" type="button" tabindex="-1"><span class="ic" aria-hidden="true">🔎</span>Search</button>
+    <button role="tab" id="t-dates" aria-controls="p-dates" aria-selected="false" data-tab="dates" type="button" tabindex="-1"><span class="ic" aria-hidden="true">📅</span>Dates</button>
+    <button role="tab" id="t-contacts" aria-controls="p-contacts" aria-selected="false" data-tab="contacts" type="button" tabindex="-1"><span class="ic" aria-hidden="true">☎️</span>Contacts</button>
+  </div>
+</nav>
+
+<dialog id="suggest" aria-labelledby="sgTitle">
+  <h2 id="sgTitle">Ask for something to be added</h2>
+  <p class="muted small" style="margin-top:0">Spotted a missing letter, a wrong date, or something you can’t find? Tell us and it will be looked at when the app is next updated. Please don’t include children’s names or private details.</p>
+  <label for="sgText">What should be added or fixed?</label>
+  <textarea id="sgText" maxlength="1500" placeholder="e.g. The Year 6 trip letter isn’t in here"></textarea>
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem">
+    <button class="btn" id="sgMail" type="button">Open in my email app</button>
+    <button class="btn ghost" id="sgCopy" type="button">Copy message and address</button>
+    <button class="btn ghost" id="sgClose" type="button">Cancel</button>
+  </div>
+  <p class="small muted" id="sgMsg" role="status"></p>
+</dialog>
+
+<dialog id="a11y" aria-labelledby="a11yTitle">
+  <h2 id="a11yTitle">Display &amp; accessibility</h2>
+  <p class="muted small" style="margin-top:0">Your choices are saved on this device where your browser allows it.</p>
+
+  <fieldset>
+    <legend>Text size</legend>
+    <div class="sizectl">
+      <button class="btn small" id="sizeDown" type="button" aria-label="Make text smaller">A−</button>
+      <output id="sizeOut" aria-live="polite">100%</output>
+      <button class="btn small" id="sizeUp" type="button" aria-label="Make text bigger">A+</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Colours</legend>
+    <div class="opt"><input type="radio" name="theme" id="th-auto" value="auto"><label for="th-auto">Match my device</label></div>
+    <div class="opt"><input type="radio" name="theme" id="th-light" value="light"><label for="th-light">Light</label></div>
+    <div class="opt"><input type="radio" name="theme" id="th-dark" value="dark"><label for="th-dark">Dark</label></div>
+    <div class="opt"><input type="radio" name="theme" id="th-contrast" value="contrast"><label for="th-contrast">High contrast (black and yellow)</label></div>
+    <div class="opt"><input type="radio" name="theme" id="th-warm" value="warm"><label for="th-warm">Warm paper (softer on the eyes)</label></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Font</legend>
+    <div class="opt"><input type="radio" name="font" id="f-atkinson" value="atkinson"><label for="f-atkinson">Clear (Atkinson Hyperlegible)</label></div>
+    <div class="opt"><input type="radio" name="font" id="f-lexend" value="lexend"><label for="f-lexend">Easy reading (Lexend)</label></div>
+    <div class="opt"><input type="radio" name="font" id="f-system" value="system"><label for="f-system">Standard (your device’s font)</label></div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Reading comfort</legend>
+    <div class="opt"><input type="checkbox" id="o-spacing"><label for="o-spacing">Extra line, letter and word spacing</label></div>
+    <div class="opt"><input type="checkbox" id="o-motion"><label for="o-motion">Reduce movement</label></div>
+    <div class="opt" id="autoReadRow"><input type="checkbox" id="o-autoread"><label for="o-autoread">Read answers aloud automatically</label></div>
+  </fieldset>
+
+  <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem">
+    <button class="btn" id="a11yClose" type="button">Done</button>
+    <button class="btn ghost" id="a11yReset" type="button">Reset to defaults</button>
+  </div>
+</dialog>
+
+<script>
+(function(){
+"use strict";
+
+/* ============ helpers ============ */
+const $=(s,r)=>(r||document).querySelector(s);
+const $$=(s,r)=>Array.from((r||document).querySelectorAll(s));
+function h(tag,attrs){
+  const e=document.createElement(tag);
+  if(attrs){for(const k of Object.keys(attrs)){const v=attrs[k];if(v==null||v===false)continue;
+    if(k==="class")e.className=v;else if(k==="text")e.textContent=v;
+    else if(k.slice(0,2)==="on")e.addEventListener(k.slice(2),v);
+    else if(v===true)e.setAttribute(k,"");else e.setAttribute(k,v);}}
+  for(let i=2;i<arguments.length;i++){const c=arguments[i];
+    (Array.isArray(c)?c:[c]).forEach(x=>{if(x==null||x===false)return;e.append(x.nodeType?x:document.createTextNode(String(x)));});}
+  return e;
+}
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+function nm(n){return n===0?"Reception":"Year "+n}
+function yl(arr){
+  if(!arr||!arr.length)return"All years";
+  const a=Array.from(new Set(arr)).sort((x,y)=>x-y);const out=[];let s=a[0],p=a[0];
+  for(let i=1;i<=a.length;i++){const n=a[i];if(n===p+1){p=n;continue}
+    if(s===p)out.push(nm(s));else if(s===0)out.push("Reception–Year "+p);else out.push("Years "+s+"–"+p);
+    s=n;p=n;}
+  return out.join(", ");
+}
+const DAY=86400000;
+function pd(iso,time){return new Date(iso+"T"+(time||"00:00")+":00")}
+function startOfToday(){const d=new Date();d.setHours(0,0,0,0);return d}
+function fmtDate(d,long){return d.toLocaleDateString("en-GB",long?{weekday:"long",day:"numeric",month:"long",year:"numeric"}:{weekday:"short",day:"numeric",month:"short"})}
+function fmtIso(iso){const d=pd(iso);return d.toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"})}
+function rel(d){const diff=Math.round((d-startOfToday())/DAY);
+  if(diff===0)return"today";if(diff===1)return"tomorrow";if(diff===-1)return"yesterday";
+  if(diff>1&&diff<=14)return"in "+diff+" days";if(diff>14&&diff<60)return"in "+Math.round(diff/7)+" weeks";
+  if(diff<0&&diff>=-14)return Math.abs(diff)+" days ago";return"";}
+const LINKRE=/([\w.+-]+@[\w-]+(?:\.[\w-]+)+|https?:\/\/[^\s)]+|0191 ?\d{3} ?\d{4})/g;
+function linked(el,text){
+  String(text).split(LINKRE).forEach((part,i)=>{
+    if(i%2===0){if(part)el.append(document.createTextNode(part));return}
+    let href;if(part.indexOf("@")>0&&part.indexOf("http")!==0)href="mailto:"+part;
+    else if(/^0191/.test(part))href="tel:+44"+part.replace(/\s/g,"").slice(1);else href=part;
+    const a=h("a",{href,text:part});if(/^http/.test(href)){a.target="_blank";a.rel="noopener noreferrer"}el.append(a);
+  });
+  return el;
+}
+
+/* ============ settings ============ */
+const DEFAULTS={scale:1,theme:"auto",font:"atkinson",spacing:false,motion:false,length:"short",lang:"English",autoread:false,years:[]};
+let S=Object.assign({},DEFAULTS);
+try{const raw=store.get("kps-settings");if(raw)S=Object.assign({},DEFAULTS,JSON.parse(raw))}catch(e){}
+function saveS(){store.set("kps-settings",JSON.stringify(S))}
+const SCALES=[1,1.15,1.3,1.5,1.75];
+function applyS(){
+  const r=document.documentElement;
+  r.style.setProperty("--scale",String(S.scale));
+  if(S.theme==="auto")r.removeAttribute("data-theme");else r.setAttribute("data-theme",S.theme);
+  r.setAttribute("data-font",S.font);
+  r.setAttribute("data-spacing",S.spacing?"roomy":"normal");
+  r.setAttribute("data-motion",S.motion?"reduce":"");
+  $("#sizeOut").textContent=Math.round(S.scale*100)+"%";
+}
+
+/* ============ DATA: documents ============ */
+function K(id,title,topic,years,src,dl,kw,text){return{id,title,topic,years,src,dl,kw,text:text.trim()}}
+const P=[0,1,2,3,4,5,6];
+const KB=[
+K("contacts","Contact details: phone and emails","Contacts",null,"Parent Information Pack 2026–27 (and later letters)","Sept–Oct 2026","contact phone email address reception number call who enquiries office safeguarding",
+`Main reception and emergencies: 0191 580 2700. If you need to reach your child in an emergency, contact reception rather than your child’s phone.
+Email by phase: Reception–Year 4: first@kps.woodard.co.uk · Years 5–8: middle@kps.woodard.co.uk · Years 9–11: senior@kps.woodard.co.uk · Sixth Form: sixthform@kps.woodard.co.uk.
+General enquiries: enquiries@kps.woodard.co.uk. Safeguarding: safeguarding@kps.woodard.co.uk. Online safety: e-safety@kps.woodard.co.uk.
+Year 8 Sparx Reader letter gave: kpsheadmiddleschool@kps.woodard.co.uk.
+Websites: https://www.kingsprioryschool.co.uk/ and the curriculum site https://www.kingspriorycurriculum.co.uk/
+Help with meal payments: Years 3–4, Sarah Hogg at the First School office; Huntington Place, your child’s Administrator.`),
+
+K("arbor","Arbor app: messages, payments, absences","Communication",null,"Parent Information Pack 2026–27; Newsletter 18 Sept 2026","Sept 2026","arbor app login push notifications payments absence report classcharts messages clubs behaviour web",
+`Arbor is the school’s main way of contacting parents. It is also used for all school payments, trips and clubs, reporting absences and recording behaviour.
+Please allow push notifications in the app so you get messages quickly.
+Prefer a browser? Use the school-specific link: https://kings-priory-school.uk.arbor.education/?/home-ui/index (needed if your children are at different schools that also use Arbor).
+First-time login guide from Arbor: https://support.arbor-education.com/hc/en-us/articles/360020147458-Logging-In-to-the-Parent-Portal-Parent-App
+ClassCharts is no longer used. Everything now comes home via Arbor, including telling the school about absences (Newsletter, 18 Sept 2026).
+Phone pouches are bought in the shop in the Parent Arbor app (see the phone pouch entry).`),
+
+K("day-times","School day times","Dates & times",null,"Parent Information Pack 2026–27","Sept 2026","start finish end time day hours gates registration home pick up 2.45 3.45 early finish",
+`Start (registration) and finish times:
+Reception 8.45–15.15 · Year 1 8.50–15.20 · Years 2–4 8.50–15.30 · Years 5–6 8.40–15.35.
+Year 7 starts 8.40; finishes 14.45 Monday–Thursday and 15.45 Friday.
+Year 8 starts 8.40; finishes 14.45 Monday, Tuesday, Wednesday and Friday, and 15.45 on Thursday.
+Years 9–13 8.40–15.45. In Key Stage 4 pupils finish at 14.45 one day a week: Year 9 Thursdays, Year 10 Wednesdays, Year 11 Tuesdays.
+Gates open 10 minutes before registration. Sixth Form pupils may sign out after their last lesson of the day.`),
+
+K("term-dates","Term dates 2026–27","Dates & times",null,"Parent Information Pack 2026–27","Sept 2026","term dates holiday half term christmas easter summer inset closed bank holiday opens closes",
+`Autumn: closes for October half-term Fri 16 Oct 2026 (3.45pm); reopens Mon 2 Nov 2026; closes for Christmas Thu 17 Dec 2026 (3.45pm).
+Spring: reopens Tue 5 Jan 2027; closes for February half-term Fri 12 Feb 2027 (3.45pm); reopens Mon 22 Feb 2027; closes for Easter Wed 24 Mar 2027 (3.45pm).
+Summer: reopens Mon 12 Apr 2027; closed Mon 3 May 2027 (May Day bank holiday); closes for May half-term Fri 28 May 2027 (3.45pm); reopens Mon 7 Jun 2027; closes for summer Wed 14 Jul 2027 (2.45pm).
+There was also an INSET day on Fri 25 Sept 2026 (primary key dates sheet).`),
+
+K("pe-primary","Parents’ evenings: Reception to Year 6","Parents’ evenings & reports",P,"Letter: Parents’ Evening Reception–Year 6","14 Oct 2026","parents evening appointment schoolcloud booking class teacher ten minutes SEN 10 november 19 november rooms year 5 year 6 reception year 1 2 3 4",
+`Dates: Tuesday 10 November and Thursday 19 November 2026, 3:50pm–6:40pm. Each meeting lasts 10 minutes. (The earlier primary key-dates sheet said 3.30–6.30pm; the 14 October letter is the newer one.)
+Book on SchoolCloud: https://kingsprioryschool.schoolcloud.co.uk/ . Booking opens Thursday 15 October at 6:00pm and closes Friday 6 November at 6:00pm. Log in with your details exactly as the school holds them, and your child’s full legal name. SchoolCloud help and video: https://support.parentseveningsystem.co.uk/category/411-parent-logins
+Reception–Year 4 appointments are in your child’s classroom. Year 5 and 6 appointments are on the First School site: 5PCL SR3, 5CFE SR1, 5KKE SR2, 6BSA Mrs Stewart’s Office, 6SMI Library, 6IST Library. Enter via the main school office on Percy Park Road.
+Teachers will keep to 10 minutes; if you need longer, say so at the start and they will arrange another meeting. Parents of children on the SEN register can also book a slot with the SEN team on the same nights to review targets and Pupil Passports (also via SchoolCloud).
+Spring term primary parents’ evenings: Wed 17 March and Tue 23 March 2027. Class teacher reports: Mon 12 July 2027.`),
+
+K("pe-y78","Parents’ evenings & reports: Years 7 and 8","Parents’ evenings & reports",[7,8],"Parent Information Pack 2026–27","Sept 2026","parents evening grade card report year 7 year 8 meet the tutor curriculum evening gcse morzine",
+`Year 7: Meet the Tutor Evening Thu 24 Sept 2026 (past) · Parents’ Evening Wed 18 Nov 2026 · Grade Card Mon 14 Dec 2026 · Grade Card Wed 24 Mar 2027 · Extended Grade Card Mon 12 Jul 2027.
+Year 8: Grade Card Mon 14 Dec 2026 · GCSE Curriculum Evening Thu 21 Jan 2027 (this date changed for paper-pack readers because of the Morzine trip) · Parents’ Evening Wed 3 Feb 2027 · Grade Card Wed 24 Mar 2027 · Extended Grade Card Mon 12 Jul 2027.
+Earlier this term: Meet the Class Teacher evening for Years 5–6 (Tue 22 Sept) and Meet the Tutor evening for Year 7 (Thu 24 Sept).`),
+
+K("pe-y913","Parents’ evenings, mocks & grade cards: Years 9 to 13","Parents’ evenings & reports",[9,10,11,12,13],"Parent Information Pack 2026–27","Sept 2026","parents evening mock exams grade card year 9 10 11 12 13 sixth form welcome",
+`Year 9: Grade Card Wed 25 Nov 2026 · Parents’ Evening Thu 26 Nov 2026 · Grade Card Wed 24 Mar 2027 · Extended Grade Card Mon 12 Jul 2027.
+Year 10: Grade Card Mon 14 Dec 2026 · Mock exams Mon 22 Feb–Fri 5 Mar 2027 · Mock Exam Grade Card Tue 13 Apr 2027 · Parents’ Evening Wed 14 Apr 2027 · Extended Grade Card Mon 12 Jul 2027.
+Year 11: Grade Card Thu 15 Oct 2026 · Mock exams Wed 2–Wed 16 Dec 2026 · Mock Exam Grade Card Mon 25 Jan 2027 · Parents’ Evening Tue 26 Jan 2027.
+Year 12: Welcome Evening Thu 24 Sept 2026 · Grade Card Mon 14 Dec 2026 · Mock exams Thu 11–Wed 24 Mar 2027 · Mock Exam Grade Card Wed 28 Apr 2027 · Parents’ Evening Thu 29 Apr 2027.
+Year 13: Grade Card Thu 15 Oct 2026 · Mock exams Tue 5–Fri 15 Jan 2027 · Mock Exam Grade Card Wed 10 Feb 2027 · Parents’ Evening Thu 11 Feb 2027.`),
+
+K("teachers-primary","Primary class teachers 2026–27","People & staff",P,"Parent Information Pack 2026–27","Sept 2026","class teacher who is teacher reception year 1 2 3 4 5 6 room assistant head winter sayer",
+`Assistant Head Reception–Year 4: Mr D Winter. Teaching & Learning Lead (Primary): Mr B Sayer. Head of Primary: Mrs V Stewart. Room codes are as printed in the pack.
+Reception: R.1 Mrs F Hearn (RFHE, Rec 2) · R.2 Mrs S Collier (RSCO, Rec 3) · R.3 Mrs C Spencer (RCSP, Rec 1).
+Year 1: 1.1 Miss S Lillie (1SLI, Rm 4) · 1.2 Miss E McDougal (1EMC, Rm 3) · 1.3 Miss C Baldwin (1CBA, Rm 2).
+Year 2: 2.1 Miss I Peddie (2IPE, Rm 6) · 2.2 Ms S Tierney (2ST, Rm 5) · 2.3 Mrs J O’Keefe 4 days / Mrs E Hodgson 1 day (2JOK/EHO, Rm 7).
+Year 3: 3.1 Mr D Winter 3 days / Mrs A Webster 2 days (3DWI/AWE, Rm 12) · 3.2 Mrs A Mains 4 days / Mrs Davy 1 day (3AMA, Rm 13) · 3.3 Mrs L Walker (3LWA, Rm 11).
+Year 4: 4.1 Miss G Graham (4GGR, Rm 9) · 4.2 Mr M McAteer (4MMC, Rm 8) · 4.3 Miss E Macaulay (4EMA, Rm 10).
+Year 5: 5.1 Mrs K Kennedy (5KKE, CE4) · 5.2 Mr C Fellows (5CFE, C1) · 5.3 Mr P Clark (5XCL, CE1).
+Year 6: 6.1 Mr I Staerck (6IST, CE3) · 6.2 Mr S Milne (D5) · 6.3 Mr B Sayer 4 days / Mrs A Webster 1 day (6BSA, C2M).`),
+
+K("tutors-y78","Tutor groups: Year 7 and Year 8","People & staff",[7,8],"Parent Information Pack 2026–27","Sept 2026","tutor form tutor head of year youldon smith year 7 year 8 room",
+`Year 7, Head of Year Mr C Youldon: 7.1 Miss K Harron (7XHA, CD12) · 7.2 Miss C Hide (7CHI, D2) · 7.3 Miss E Ashton (7EAS, C23) · 7.4 Mr J Thompson (7JTH, CO22) · 7.5 Miss I Bailey (7IBA, CO4).
+Year 8, Head of Year Miss C Smith: 8.1 Mr M Gowland (8MGO, CO11) · 8.2 Mr M Jankowski (8MJA, CO25) · 8.3 Mr E Flood (8EFL, C22) · 8.4 Mr K Young (8KYO, L3) · 8.5 Miss A Wan (8XWA, L6).`),
+
+K("tutors-y913","Tutor groups: Years 9 to 13","People & staff",[9,10,11,12,13],"Parent Information Pack 2026–27","Sept 2026","tutor form tutor head of year year 9 10 11 12 13 sixth form capstick watson armstrong frater",
+`Years 9 and 10 are led by Mr N Armstrong and Miss E Frater. Year 11: Miss L Watson. Years 12 and 13: Mr S Capstick.
+Year 9: 9.1 Mrs R Abu-Hantash (9RAB, CO26) · 9.2 Mr P Coulson Mon/Tue/Thu/Fri with Miss L Nicholson Wed (9PCO, L1) · 9.3 Mrs K Harman (9KHA, C24) · 9.4 Ms E Puddephatt Mon/Wed/Fri with Mrs S Penhall Tue/Thu (9EPU/SPE, C2) · 9.5 Miss D Sutherland (9DSU, L7).
+Year 10: 10.1 Mr P Allonby (10PAL, CO23) · 10.2 Mr L Allen (10LAL, SF23) · 10.3 Mr A Robinson (10ARO, L8) · 10.4 Mrs S Trevena Mon/Tue with Mrs F Leather Wed–Fri (10STR/FLE, CO12) · 10.5 Mr N Brown (10NBR, C13).
+Year 11: 11.1 Mrs J Carter Mon–Wed with Miss L Nicholson Thu/Fri (11JCA/LNI, C26) · 11.2 Mrs H Bowerman (11HBO, C4) · 11.3 Miss E Brydon (11EBR, C3) · 11.4 Mrs J Rowell (11JRO, CD11) · 11.5 Ms S Lowther (11SLO, CO3).
+Year 12: 12.1 Miss A Beamish (12ABE, D7) · 12.2 Mrs A Coultas Mon/Tue/Fri with Mrs J Johnston Wed/Thu (12ACO/JJO, CO21/L5) · 12.3 Mrs J Jefferson Mon/Tue/Fri with Miss J Turner Wed/Thu (12JJE, CD2) · 12.4 Miss J Guy (12JGU, L2).
+Year 13: 13.1 Mr D Leightley (13DLE, SF22) · 13.2 Miss R Poole Mon/Tue/Fri with Mr S Capstick Wed/Thu (13RPO/SCA, L4/SF11) · 13.3 Mrs S Dunn Mon–Wed with Mrs H Wheatley Thu/Fri (13SDU/HWE, C21) · 13.4 Mrs S Thompson (13STH, SF12).`),
+
+K("phones-pouch","Phone pouches from 9 November (Years 5–11)","Phones & devices",[5,6,7,8,9,10,11],"Letter: Mobile Phone Pouches (Acting Principal)","16 Oct 2026","phone pouch mobile smartwatch earpods airpods lock buy arbor £10 9 november 6 november replacement £8.50 pupil premium cgm glucose emergency refund",
+`NEWEST RULE: From Monday 9 November 2026, every pupil from Year 5 to Year 11 who brings a mobile phone or other smart device (smartwatch, ear-pods, etc.) must lock it in a secure phone pouch for the whole school day. This replaces the lockable phone boxes. The school’s preference is that children don’t bring devices at all.
+To do: if your child will bring a device, buy a pouch in the shop in the Parent Arbor app by Friday 6 November. Cost £10.00. Buying it also means you agree to the Phone Pouch Agreement.
+Pupils lock the phone in the pouch before they enter the school site, keep the pouch on them locked all day, and it is unlocked at the end of the day (fixed unlocking stations, mainly in the underpass on the way to the Metro exit at the back of the school; some duty staff have hand-held unlockers; reception can unlock if forgotten or for early leavers).
+Forgotten pouch: a temporary pouch is issued for the day. Lost or damaged pouch, or one deliberately damaged: replacement £8.50, paid by parents.
+Year 11: 40% of the pouch cost is refundable at the end of Year 11 if returned complete and working.
+Pupil premium families can ask for the first pouch to be paid for, using the “Parents request for PP funding” form linked in the letter.
+Only exception: pupils who need a smart device for medical management, such as a continuous glucose monitor.
+Emergencies: contact reception on 0191 580 2700, not your child’s phone.
+Not following the rules (including a decoy phone, second phone, earpods or smartwatch): the pupil goes to P4L for the day first, then escalating sanctions up to suspension for persistent breaches.
+Questions: enquiries@kps.woodard.co.uk.`),
+
+K("phones-agreement","Phone Pouch Agreement: who agrees to what","Phones & devices",[5,6,7,8,9,10,11],"Secure Phone Pouch Agreement","16 Oct 2026","pouch agreement responsibilities school parent pupil sign checks temporary",
+`Complete your purchase by Friday 6 November 2026; the agreement applies from Monday 9 November 2026.
+School will: sell one pouch per pupil at £10.00; help families on pupil premium; teach pupils why the system exists; run rolling pouch checks in tutor time and help unlock at the end of the day; unlock at reception for early leavers (e.g. appointments); issue a temporary pouch if one is forgotten (returned daily); communicate clearly about updates and sanctions; review the policy regularly.
+Parents will: support the policy, make sure the pouch comes to school every day, pay for replacement if lost or damaged, accept that a forgotten pouch means a temporary one, and contact reception (not the child) in an emergency.
+Pupils will: bring the pouch daily, lock the phone in before entering the school site, keep it locked and unopened on their person all day, not tamper with it, unlock only at the end of the day or at reception when leaving early, and not bring unauthorised devices.`),
+
+K("phones-faq","Phone pouch FAQs","Phones & devices",[5,6,7,8,9,10,11],"Phone pouch letter FAQ","16 Oct 2026","pouch faq unlock d&t art research gcse laptops smartwatch decoy forget",
+`Unlocking: at the end of the day at a fixed unlocking point; pupils keep moving and take the phone out only after leaving the school site.
+Forgot to unlock: reception has an unlocking device.
+Forgot the pouch at home: temporary pouch for the day.
+Where are the unlockers? With key duty staff, and the main bank in the underpass on the route to the Metro exit at the back of the school.
+D&T and Art research or photos of GCSE work: learning won’t be affected; laptops and PCs are available in school.
+Decoy phones, smartwatches, ear-pods: the policy covers all mobile devices. If a second device is found the pupil goes to P4L for the day, with increased sanctions up to suspension for persistent breaches.`),
+
+K("phones-history","Earlier mobile phone rules (superseded by pouches)","Phones & devices",[5,6,7,8,9,10,11],"Parent Information Pack and 3 Sept letter","Sept 2026","phone rules switched off handed in registration consequence p4l suspension confiscated 14 september",
+`These were the rules before the pouch system, now replaced from 9 November (see the phone pouch entry).
+Information pack (Sept): phones switched off and handed in to staff at the start of registration, stored securely and returned at dismissal; late arrivals hand in at Main Reception. First offence: confiscation and time in Prepare for Learning (P4L); repeat offence: fixed-term suspension; refusing to hand over: escalated to SLT and internal isolation.
+Letter of 3 Sept (Years 7–11): phones switched off and out of sight from entering the site until leaving it; consequences from Mon 14 Sept for use at those points. The school said it was exploring magnetic pouches, which became the October announcement.`),
+
+K("meals","School meals: cost and how to pay","Money & meals",null,"Letter: Payment Methods of School Meals","Aug 2026","lunch meal dinner price cost £2.73 pay arbor credit debt arrears cafe k biometric cashless canteen packed lunch",
+`A school meal costs £2.73 for pupils from Reception to Year 11. Chilled milk or water is always available.
+Pay in advance through the Arbor app (weekly, half-termly or termly). Accounts must stay in credit. If an account goes into arrears the school will write to you and ask for a packed lunch until it is cleared; unresolved debts can be referred to a debt-collection agency.
+Years 3–4 (Percy Park): set menu at £2.73 a day, paid via Arbor; help from Sarah Hogg at the First School office.
+Huntington Place: cashless cafeteria (Café K) using biometric finger scanning; top up via Arbor. Years 5–6: set menu at lunchtime, £2.73 a day. Years 7–13: catering at break and lunch. Year 9 and above can choose from a wider menu with varying prices, so check your child’s account regularly. Help with Arbor payments: your child’s Administrator.`),
+
+K("fsm","Free school meals","Money & meals",null,"Letter: Payment Methods of School Meals","Aug 2026","free school meals fsm universal credit benefits eligibility apply north tyneside council infant uifsm pupil premium",
+`Reception, Year 1 and Year 2 children get Universal Infant Free School Meals automatically.
+Other children may qualify if parents or carers receive certain benefits, such as Universal Credit (from September 2026 there is no earnings threshold in England), Income Support, income-based JSA, income-related ESA, Guaranteed Pension Credit, Child Tax Credit with no Working Tax Credit, or Working Tax Credit run-on.
+You must apply to North Tyneside Council: https://my.northtyneside.gov.uk/category/238/free-school-meals . The school cannot award free meals unless the council registers your child, and free school meals cannot be backdated: they start from the date the council receives your form.
+Free school meals give a daily allowance of £2.73; extras bought in cafés or the canteen must be paid for by parents.`),
+
+K("uniform","Uniform: PE kit and traditional uniform (Reception–Year 11)","Uniform & kit",null,"Parent Information Pack 2026–27","Sept 2026","uniform pe kit hoodie tie shirt skirt trousers shoes tights socks gingham dress emblematic jumper cardigan",
+`Golden rule: pupils must wear PE kit on scheduled PE days. They may wear PE kit every day, or traditional uniform.
+PE kit: KPS PE hoodie and KPS PE top, white sport socks or navy football socks, trainers suitable for sport. Can wear: navy/black tracksuit bottoms, leggings or shorts (options from Emblematic include KPS shorts, KPS tracksuit bottoms, non-KPS i-gen leggings).
+Traditional uniform: KPS jumper or cardigan; plain white collared shirt or white revere-neck blouse; tailored plain grey pleated skirt, shorts or trousers; white socks (knee or ankle), grey ankle socks, or black tights (50+ denier); plain traditional black shoes. Navy gingham dress is allowed for Reception–Year 6 only. Year 7 and above need a school-branded tie with a collared shirt.
+Uniform supplier: Emblematic. The Sustainable Uniform Shop (PTA) sells pre-loved items at about a quarter of new price.`),
+
+K("uniform-rules","Not allowed: appearance and uniform reminders (Years 7–11)","Uniform & kit",[7,8,9,10,11],"Letter: Start of Term Behaviour Reminder","3 Sept 2026","nail varnish eyelashes make-up hair dye piercings jewellery hoodies trainers not allowed emblematic delay sanction",
+`Not permitted: nail varnish and fake nails; fake eyelashes; heavy or excessive make-up; unnaturally dyed hair; facial piercings (clear plastic retainers allowed); jewellery other than a watch; hoodies (unless the school PE hoodie); trainers (unless in PE uniform); mixing PE and day uniform.
+Consequences follow school policy, up to being removed from lessons.
+The school apologised for delays with uniform from Emblematic and said pupils will not be sanctioned where uniform is wrong for that reason.
+Sixth Form follows a separate dress code (smart-casual style, make-up, nail varnish and jewellery allowed, with some items excluded such as crop tops, swimwear, high heels, flip-flops, offensive slogans).`),
+
+K("behaviour","Behaviour expectations and detentions","Behaviour & attendance",null,"Parent Information Pack 2026–27; Newsletter 18 Sept 2026","Sept 2026","behaviour detention level 3 level 4 lateness homework detention p4l rewards late punctuality arbor",
+`Core values: respect, tolerance and friendship. Behaviour is tracked on Arbor and parents are told through Arbor; for serious incidents the school tries to call the same day.
+Detentions: Level 3 – 15 minutes after school, same day, after two corrections in class. Level 4 – 30 minutes after school, same day, if removed from a lesson. Lateness detention (30 minutes, in the school day) if late three times in a half-term. Homework detention – in the school day; missing it becomes an after-school detention. Maximum 30 minutes of detention a day; more than that escalates to P4L the next day. Parents are told of after-school detentions via Arbor.
+Year 7 only (newsletter 18 Sept): from the following week, two lates in a week (collated Wednesday to Wednesday) means a detention.
+Full policy: see the Behaviour Expectations policy on the school website.`),
+
+K("equipment","Equipment list (Year 5 and above)","Uniform & kit",[5,6,7,8,9,10,11,12,13],"Parent Information Pack 2026–27","Sept 2026","equipment pencil case calculator casio ruler protractor reading book pens compass water bottle",
+`Essential: reading book, pencil case, at least 2 pens, pencil, eraser, sharpener, ruler, protractor, and a Casio FX-83 or FX-85 (solar) scientific calculator (Year 7 and above).
+Desirable: coloured pens or pencils, a pair of compasses, a water bottle.`),
+
+K("sparx-maths","Sparx Maths homework","Homework",[7,8,9,10,11],"Letter: Sparx Maths (Mr Gowland)","18 Sept 2026","sparx maths homework friday due login password reset email parent portal support video hints sanction",
+`Sparx Maths is used by Years 7–11. Homework is set on Friday and due the following Friday every week. It is personalised to each child.
+Try not to help until your child has had a go; they can use the support video and hints. Weekly emails from Sparx go to the email registered with the school (keep it up to date). If your child also has Sparx Science and Reader you get one combined email. To change email preferences use the “update your preferences” button in the email; the school cannot unsubscribe you.
+Forgotten login: use the reset password button (the teacher is notified) or log in with the school Google account.
+Not completing homework leads to a sanction. More: https://sparxmaths.com/parents/ . Questions: email the head of school address for your child’s year group.`),
+
+K("sparx-reader","Sparx Reader (English homework)","Homework",[7,8,9,10],"Letters: Sparx English and Sparx Reader (Mrs Harman)","18 Sept 2026","sparx reader reading english homework literacy ebooks gold reader login parent portal homework club",
+`From September pupils use Sparx Reader for weekly English homework: set by the Literacy teacher in Years 7–8 and the English Language teacher in Years 9–10.
+Pupils choose eBooks at their level and answer questions as they read. Consistent careful readers can unlock Gold Reader (read any paper book by scanning its barcode).
+Log in at sparxreader.com, find the school, and use Sparx Maths details.
+Please don’t answer the questions for your child, as that makes books too hard. Provide a quiet space and ask about the book. Track progress via the Parent Portal link in the Sparx Maths weekly email. Homework clubs run in school with computers available.
+Questions: middle@kps.woodard.co.uk or senior@kps.woodard.co.uk (Year 8 letter: kpsheadmiddleschool@kps.woodard.co.uk).`),
+
+K("y7-homework","Year 7 homework timetable","Homework",[7],"Newsletter 18 Sept 2026 (Year 7, Mr Youldon)","18 Sept 2026","year 7 homework timetable spanish language nut spellings english group due day notebook google classroom",
+`Maths and Science (Sparx): all groups, due Friday.
+Find your child’s English group on their timetable code ‘En’: take the first letter (x or y) and the last number, so 7x/En2 means group 7x2.
+English (spellings and Sparx Reader): 7x1 Wednesday · 7x2 Tuesday · 7x3 Friday · 7y1 Monday · 7y2 Wednesday.
+Spanish (Language Nut): 7x1 Monday · 7x2 Wednesday · 7x3 Tuesday · 7y1 Wednesday · 7y2 Tuesday.
+Pupils get a small notebook for homework days, holding their Google Classroom and computer login details.`),
+
+K("attendance","Reporting absence and attendance","Behaviour & attendance",null,"Newsletter 18 Sept 2026 (Mrs Pearson)","18 Sept 2026","absence absent ill sick attendance report late holiday term time medical appointment 97% target",
+`Report absences through Arbor (the school no longer uses ClassCharts). The relevant school office can also point you to the right person.
+The school’s attendance target is 97% (the national target is above 94% by 2028). The Senior Attendance Champion is Mrs Pearson.
+Please keep the school up to date with leave requests, book medical appointments outside school hours where possible, and avoid term-time holidays. The school contacts families about concerns by letter, meeting or a supportive call. Support includes Thrive practitioners, the Connect Mental Health Support Team and the pastoral team.`),
+
+K("safeguarding","Safeguarding contacts","Safeguarding & wellbeing",null,"Newsletter 18 Sept 2026 (Mrs Pearson)","18 Sept 2026","safeguarding concern welfare dsl child protection contact pearson stewart online safety mcivor",
+`Any worry about a child’s welfare: contact safeguarding@kps.woodard.co.uk or phone 0191 580 2700.
+Designated Safeguarding Lead: Mrs K Pearson (Senior Safeguarding and Attendance Lead). Deputy: Mrs V Stewart (Head of Primary). Team: Miss C Smith (Head of Year 8), Mrs S Taylor (OOSC Manager), Mrs E Melia (OOSC Deputy Manager), Mr G Swinton, Mr C Fellows. Designated Teacher: Mrs J Watson (Senior Inclusion Lead).
+Online Safety Officer: Mr B McIvor (e-safety@kps.woodard.co.uk). Cyber security lead: Mr N Kelsey.
+If a child is at immediate risk of harm, call 999.`),
+
+K("online-y7","Online safety: group chats and video calls (Year 7)","Safeguarding & wellbeing",[7],"Newsletter 18 Sept 2026 (Mr McIvor & Mr Youldon)","18 Sept 2026","online safety whatsapp snapchat group chat video call screenshot year 7 conversation",
+`The school has seen inappropriate content and unkind behaviour in some pupil-led group chats, and asks every Year 7 parent to talk with their child about group chats and video calls.
+Key messages: anything posted can be screenshotted or recorded, even with disappearing messages; never feel pressured to turn on a camera or share private information; if you wouldn’t do it face to face, don’t do it online; “just a joke” doesn’t make it OK; be careful if unknown people are added; never record or share embarrassing content of others; leave any chat or call that feels uncomfortable and tell a trusted adult. Review app privacy settings together (guidance for WhatsApp and Snapchat was in the newsletter).`),
+
+K("online-y8","Online safety and conduct in WhatsApp groups (Year 8)","Safeguarding & wellbeing",[8],"Letter: Online safety in WhatsApp groups (Mr McIvor)","23 Sept 2026","whatsapp online safety year 8 age 13 group chat screenshot privacy settings ceop nspcc evidence block report",
+`Things to know: WhatsApp’s minimum age is 13; large groups can include strangers and anyone can see your child’s number and photo; messages escalate quickly; exclusion hurts; late-night chats affect sleep.
+At home: talk calmly and often, check privacy settings together (profile photo, last seen, who can add them to groups, location), agree family rules such as phones charging outside bedrooms, encourage “think before you send”, reassure that leaving a group is always OK, and set a good example (including parent groups).
+If something goes wrong: keep screenshot evidence, block and report in WhatsApp, don’t confront those involved, and tell the school. Immediate danger: 999. Online sexual exploitation or grooming: report to CEOP at ceop.police.uk. Advice: nspcc.org.uk, internetmatters.org, childnet.com.`),
+
+K("young-carers","Young carers support","Safeguarding & wellbeing",null,"Newsletter 18 Sept 2026 and Summer newsletter","2026","young carer carers support drop in ease card miss smith counselling",
+`A young carer is aged 5–18 and looks after someone who couldn’t manage without their help. Support at school can include understanding about homework, flexibility about calling home, help with punctuality and attendance, a teacher to talk to, 1-1 counselling, extra pastoral and careers support, and advice on local groups. Young carers are eligible for an EASE card for free North Tyneside leisure for themselves and a friend.
+Contact the Young Carers Champion, Miss Caroline Smith (Head of Year 8). Drop-in sessions run at lunchtimes (see clubs) and after school on Wednesdays. Independent help: northtynesidecarers.org.uk.`),
+
+K("clubs-after","After-school and before-school clubs (Huntington Place), Autumn Term 2","Clubs & enrichment",[5,6,7,8,9,10,11,12,13],"Enrichment poster: Before and after school, Autumn Term 2","From Nov 2026","clubs after school before school football badminton drama dj trampoline library multi skills art craft rock school volleyball climbing hockey music theory book club young carers sixth form",
+`Paid activities with spaces appear on Arbor to book and pay. Many are drop-in. If your child leaves at 2.45 and returns at 3.45 for a club, use the yard gates rather than Reception (newsletter 18 Sept).
+Monday: Football (Andrew Cartwright) Years 5–8, 7:45–8:30am · Library Years 7–8, 2:45–3:45 · Drama Years 7–8, 2:45–3:45 · DJ Club Years 7–8, 2:45–3:45 · Trampoline Years 5–9, 3:45–4:45.
+Tuesday: Multi Skills Years 7–8, 2:45–3:45 · Library Years 7–8, 2:45–3:45 · Badminton Years 9–10, 3:45–4:45.
+Wednesday: Sixth Form Sports Years 11–13, 7:45–8:30am · Young Carers Drop In Years 7–8, 2:45–3:45 · Art & Craft Years 7–8, 2:45–3:45 · Rock School Years 7–8, 2:45–3:45 · Volleyball Years 9–13, 3:45–4:45.
+Thursday: Badminton Years 7–8, 7:45–8:30am · Music Theory Years 7–8, 8:15–8:40am · Book Club Years 7–8, 8:00–8:30am · Art Year 7, 2:45–3:45 · Library Year 7, 2:45–3:45 · Climbing Years 5–13, 3:45–4:45 · Trampoline Years 5–9, 3:45–4:45.
+Friday: Hockey Years 7–8, 7:45–8:30am · Library Year 8, 2:45–3:45.`),
+
+K("clubs-lunch","Lunchtime clubs (Huntington Place), Autumn Term 2","Clubs & enrichment",[5,6,7,8,9,10,11,12,13],"Enrichment poster: Lunchtime clubs, Autumn Term 2","From Nov 2026","lunchtime clubs lunch thrive drop in homework club choir dance coding languages dungeons dragons journalism poetry wellbeing axiom maths book club young carers youth alpha",
+`Free lunchtime activities are drop-in with no Arbor sign-up.
+Monday: GCSE DT Workshop Years 9–11 (1:00–1:50, D2) · Senior Choir Year 9+ (12:55–1:25, Chapel).
+Tuesday: Languages Club Years 7–8 (12:00–12:55) · Choristers Years 5–8 (12:00–12:25, Chapel) · Homework Club Years 5–8 (12:00–12:55, BSA) · Dungeons & Dragons/Board Games Years 7–8 (12:00–12:55) · Wellbeing Drop Ins Years 9–13 (1:00–1:50) · Journalism/Poetry by Heart Year 9+ (12:55–1:50).
+Wednesday: Thrive Drop In Years 5–8 (12:30–12:55, Oasis) · Senior Soul Band Years 9–11 (12:55–1:20) · GCSE Art Coursework Years 10–11 (1:00–1:50) · Dance Club Year 5 (12:20–12:50) · Drama Club Years 9 and 11 (1:00–1:50) · Journalism/Poetry by Heart Years 7–8 (12:35–12:55).
+Thursday: Thrive Drop In Years 5–8 (12:30–12:55) and Years 9–11 (1:25–1:50) · Youth Alpha Years 7–8 (12:00–12:55) and Years 9–11 (1:00–1:50) · Axiom Maths Years 7–8, invite only (12:00–12:55) · Coding Club Years 5–8 (12:00–12:55) · Young Carers Drop In Years 9–11 (1:00–1:50).
+Friday: Dance Club Years 5–8 (12:00–12:55, Dance Studio) · Thrive Drop In Years 9–11 (1:25–1:50) · Book Club Years 9–13 (1:00–1:50, Library).`),
+
+K("primary-dates","Primary key dates, Autumn Term 2026","Dates & times",P,"Primary Key Dates sheet (Autumn Term 2026)","Autumn 2026 (undated sheet)","primary key dates book fair concert christmas performance panto christingle residential robinwood nativity phonics library visit disco",
+`Tue 10 Nov and Thu 19 Nov: Parents’ Evenings (the 14 Oct letter gives 3:50–6:40pm). w/c 16 Nov: Book Fair, all week. Thu 19 Nov 9:30am: First School instrumental concert. Mon 30 Nov–Wed 2 Dec: Year 5 Residential to Robinwood.
+Christmas performances: Reception Wed 9 Dec 9:30am and Thu 10 Dec 2:00pm · Year 1 Mon 7 Dec 2:00pm and Tue 8 Dec 9:30am · Year 2 Tue 8 Dec 2:00pm and Thu 10 Dec 9:30am · Year 3 Tue 1 Dec (class DWI), Wed 2 Dec (AMA), Thu 3 Dec (LWA), all 2:50pm · Year 4 Christingle Thu 10 Dec 9:30am (time to be confirmed).
+Pantomime visits: Fri 11 Dec Years 5 and 6 · Mon 14 Dec Reception · Tue 15 Dec Years 1 to 4.
+The sheet said the next update would be Friday 6 November, and that dates can change.`),
+
+K("pta","PTA: who they are and how to get involved","PTA & fundraising",null,"PTA Newsletter October 2026","Oct 2026","pta parents teachers association fundraising volunteers join committee co-chairs linda jenny facebook sustainable uniform shop",
+`The PTA is led by co-chairs Linda and Jenny, supported by Caroline and Raja. They meet about once a month and everyone is welcome. Email: kingsprioryschoolpta@gmail.com (the AGM role-description page shows kingsprioryschool@gmail.com). Details and shop opening times are on the Kings Priory School PTA Facebook page.
+Events through the year include discos, fairs, clothing swishing, wreath making, Christmas trees and more. The Sustainable Uniform Shop sells good-quality pre-loved items at about a quarter of new price. More volunteers are always wanted.`),
+
+K("pta-calendar","PTA events calendar 2026–27","PTA & fundraising",null,"PTA Newsletter October 2026","Oct 2026","pta events calendar disco wreath christmas fair special someone spring disco dates",
+`October: Spooky Discos 14 Oct (EYFS, Y1–2, Y3–4) and 15 Oct (Y5–6, Y7–8) – already held.
+November: Wreath Making 1 on 25 Nov. December: Wreath Making 2 on 2 Dec; Christmas Fair and Christmas Tree Sale on Sunday 6 Dec.
+February: Spring Discos on 8 Feb (Y5–6, Y7–8) and 22 Feb (EYFS, Y1–2, Y3–4).
+March: Special Someone on 5 Mar. June: Special Someone on 18 Jun.`),
+
+K("pta-christmas","PTA Christmas: fair, trees and wreath making","PTA & fundraising",null,"PTA Newsletter October 2026","Oct 2026","christmas fair christmas tree nordmann fir wreath making raffle tombola toys books donate volunteer 6 december",
+`Christmas Fair: Sunday 6 December, 11:00–14:00. Volunteers, raffle prizes, tombola items and good-quality toys and books (for the pre-loved toy stall) are wanted: get in touch with the PTA.
+Christmas trees: orders closed 17:00 on 26 Oct 2026. Collection from the Christmas Fair on Sunday 6 December, 10:30–14:30, choose your own tree and it is netted for you; trees keep well outside in water.
+Wreath Making: evenings on 25 November and 2 December; ticket includes a glass of fizz or pop and a nibble; 25 places each evening, usually sells out quickly; friends and family welcome, over 18s only.`),
+
+K("pta-agm","PTA AGM: Tuesday 17 November","PTA & fundraising",null,"PTA AGM notice","Oct 2026","agm annual general meeting pta committee elections treasurer chair secretary roles dbs 17 november",
+`Tuesday 17 November, 12:00–13:00 on the Kings Priory First School site. Everyone is welcome, and you don’t need to be applying for a role. Email the PTA if you plan to attend.
+Agenda: apologies, Chair’s report, Treasurer’s report and accounts, committee elections (all current members stand down), constitution or policy updates, any other business.
+Roles: Chair (about 6 hours a week), Secretary (about 4), Treasurer (about 3), committee members (flexible time, wanted from all year groups). Committee members are expected to apply for a DBS check.`),
+
+K("pta-discos","PTA discos: how they work","PTA & fundraising",null,"PTA Newsletter October 2026","Oct 2026","disco spooky spring allergies tickets tuck hot dogs pizza first school site senior school site",
+`Three discos a year, one each term. Tickets include the DJ, unlimited juice, veg snacks and biscuits; hot dogs and pizza slices to buy; age-appropriate tuck. Buy tickets early so allergies can be catered for (younger children with allergies get name stickers). No need to print tickets as attendee lists are kept.
+EYFS–Year 4 discos are on the first school site; children can wear disco clothes suitable for the school day and bring a (Halloween) accessory. Y5–Y8 discos are on the senior school site; children bring clothes to change into and are dismissed from the Middle School Yard. Tell OOSC your plans if your child attends.`),
+
+K("halloween","Spooky Halloween writing competition (Reception–Year 6)","Events & competitions",P,"Poster: Spooky Halloween Writing Competition","Oct 2026","halloween writing competition story suspense local history entries due 6 november audio narrated",
+`Open to Reception–Year 6. Write a suspense story with a local history element. Entries due by 6 November; hand them to your class teacher. The winner will be audio narrated and published.`),
+
+K("legends","Local myths and legends (ideas for the story competition)","Events & competitions",P,"Poster: Myths & Legends of North Shields, Cullercoats & Tynemouth","Oct 2026","myths legends jingly jordy tynemouth priory dragon cor black middens fairy caves cullercoats shuck ghost story ideas",
+`Ideas on the school’s list: Jingly Jordy (17th-century wrecker and pirate said to hide treasure beneath Tynemouth Castle); The Three Kings at the Priory (St Oswin, Osred II and Malcolm III said to guard the coast); The Dragon of Tynemouth and Walter the Knight; The Master Mariners’ Asylum and smuggler tunnel tales (North Shields); The Giant Cor and the Black Middens rocks; the “Boneless” ghost of North Shields; the Fairy Caves at Cullercoats; the Cullercoats Shuck or Smuggler’s Ghost.`),
+
+K("news-sept","School news from the 18 September newsletter","School news",null,"Newsletter 18 Sept 2026 (Acting Principal)","18 Sept 2026","newsletter sixth form roof repairs open events enrichment arbor acting principal punctuality yard gates",
+`Open events for September 2027 entry: Reception Open Morning Sat 26 Sept (10am–12.30pm, Percy Park) · Year 7 Open Evening Wed 30 Sept (6–7.15pm, Huntington Place) · Sixth Form Open Evening Tue 6 Oct. All have passed; booking forms were linked in the newsletter.
+Sixth Form block roof repairs began Monday 5 October and are expected to finish before Christmas; temporary accommodation gives extra study space.
+Enrichment: paid activities with places show on Arbor; lunchtime clubs are free drop-in. Year 7 childcare options 2.45–3.45 were prioritised by need.`),
+
+K("leadership","Who runs the school","People & staff",null,"Letter of 1 Sept 2026; Summer newsletter; Parent Information Pack","2026","principal acting principal paul clarke vice principal helen bownes chair academy council woodard trust mrs pearson stewart watson inclusion senco assistant principal hand",
+`Acting Principal: Mr Paul Clarke, appointed by Woodard Academies Trust. Vice-Principal (temporary): Mrs Helen Bownes. Chair of the Academy Council: Christopher J Smith.
+Other roles for 2026–27: Head of Primary Mrs V Stewart; Assistant Principal Mr J Hand; Assistant Principal and cyber security lead Mr N Kelsey; Mrs K Pearson Senior Safeguarding and Attendance Lead; Mrs J Watson Senior Inclusion Lead (SENDCO); Mr D Winter Assistant Head Reception–Year 4; Mr B Sayer Teaching & Learning Lead (Primary); Miss Keene Teaching & Learning Lead (Secondary).
+Heads of year: Year 7 Mr C Youldon; Year 8 Miss C Smith; Years 9–10 Mr N Armstrong and Miss E Frater; Year 11 Miss L Watson; Sixth Form Mr S Capstick.`),
+
+K("summer","Highlights from last summer’s newsletter","School news",null,"Summer newsletter 2025–26","Summer 2026","summer newsletter oliver production make £6 grow st oswalds new staff starters",
+`The summer production of Oliver! ran 24–26 June with over 160 pupils. Year 7’s “make £6 grow” event raised £900 for St Oswald’s. New starters for 2026–27 include primary teachers Miss Peddie and Miss Graham, Mr Thompson (Humanities), and Miss I Bailey and Mr Jankowski (Maths); Miss Puddephatt returned from maternity leave.`)
+];
+
+/* ============ DATA: events ============ */
+function E(date,title,o){return Object.assign({id:"e"+date+"-"+title.slice(0,10),date,title,years:null,where:"",note:"",src:"",deadline:false},o||{})}
+const EV=[
+E("2026-10-14","Spooky Disco: EYFS–Year 4",{years:[0,1,2,3,4],src:"PTA Newsletter"}),
+E("2026-10-15","Spooky Disco: Years 5–8",{years:[5,6,7,8],src:"PTA Newsletter"}),
+E("2026-10-26","Christmas tree orders closed",{time:"17:00",src:"PTA Newsletter"}),
+E("2026-11-02","School reopens after October half-term",{src:"Parent Information Pack"}),
+E("2026-11-06","Last chance to book parents’ evening on SchoolCloud (Reception–Year 6)",{time:"18:00",years:P,deadline:true,src:"Parents’ Evening letter, 14 Oct"}),
+E("2026-11-06","Buy your child’s phone pouch in the Arbor shop (£10)",{years:[5,6,7,8,9,10,11],deadline:true,src:"Phone pouch letter, 16 Oct",note:"Needed if your child brings a phone or smart device from 9 Nov."}),
+E("2026-11-06","Halloween story competition entries due",{years:P,deadline:true,src:"Halloween poster",note:"Hand to your class teacher. Suspense story with a local history element."}),
+E("2026-11-09","Phone pouches start (Years 5–11)",{years:[5,6,7,8,9,10,11],src:"Phone pouch letter, 16 Oct"}),
+E("2026-11-10","Parents’ Evening (Reception–Year 6), first night",{time:"15:50",until:"18:40",years:P,where:"Reception–Y4 in classrooms; Y5–6 on First School site (enter via Percy Park Road)",src:"Parents’ Evening letter, 14 Oct",note:"10-minute appointments, booked on SchoolCloud."}),
+E("2026-11-16","Primary Book Fair (all week)",{end:"2026-11-20",years:P,src:"Primary key dates"}),
+E("2026-11-17","PTA AGM",{time:"12:00",until:"13:00",where:"Kings Priory First School site",src:"PTA AGM notice",note:"Everyone welcome. Email the PTA if you plan to attend."}),
+E("2026-11-18","Year 7 Parents’ Evening",{years:[7],src:"Parent Information Pack"}),
+E("2026-11-19","First School instrumental concert",{time:"09:30",years:[0,1,2,3,4],src:"Primary key dates"}),
+E("2026-11-19","Parents’ Evening (Reception–Year 6), second night",{time:"15:50",until:"18:40",years:P,where:"Reception–Y4 in classrooms; Y5–6 on First School site",src:"Parents’ Evening letter, 14 Oct"}),
+E("2026-11-25","PTA Wreath Making, evening 1",{src:"PTA Newsletter",note:"25 places, over 18s only, usually sells out."}),
+E("2026-11-25","Year 9 Grade Card",{years:[9],src:"Parent Information Pack"}),
+E("2026-11-26","Year 9 Parents’ Evening",{years:[9],src:"Parent Information Pack"}),
+E("2026-11-30","Year 5 residential to Robinwood",{end:"2026-12-02",years:[5],src:"Primary key dates"}),
+E("2026-12-01","Year 3 Christmas performance (class DWI)",{time:"14:50",years:[3],src:"Primary key dates"}),
+E("2026-12-02","Year 3 Christmas performance (class AMA)",{time:"14:50",years:[3],src:"Primary key dates"}),
+E("2026-12-02","Year 11 mock exams begin",{end:"2026-12-16",years:[11],src:"Parent Information Pack"}),
+E("2026-12-02","PTA Wreath Making, evening 2",{src:"PTA Newsletter",note:"25 places, over 18s only."}),
+E("2026-12-03","Year 3 Christmas performance (class LWA)",{time:"14:50",years:[3],src:"Primary key dates"}),
+E("2026-12-06","PTA Christmas Fair and Christmas Tree Sale",{time:"11:00",until:"14:00",src:"PTA Newsletter",note:"Tree collection 10:30–14:30. Volunteers and raffle or tombola prizes wanted."}),
+E("2026-12-07","Year 1 Christmas performance",{time:"14:00",years:[1],src:"Primary key dates"}),
+E("2026-12-08","Year 1 Christmas performance",{time:"09:30",years:[1],src:"Primary key dates"}),
+E("2026-12-08","Year 2 Christmas performance",{time:"14:00",years:[2],src:"Primary key dates"}),
+E("2026-12-09","Reception Christmas performance",{time:"09:30",years:[0],src:"Primary key dates"}),
+E("2026-12-10","Reception Christmas performance",{time:"14:00",years:[0],src:"Primary key dates"}),
+E("2026-12-10","Year 2 Christmas performance",{time:"09:30",years:[2],src:"Primary key dates"}),
+E("2026-12-10","Year 4 Christingle",{time:"09:30",years:[4],src:"Primary key dates",note:"Time to be confirmed."}),
+E("2026-12-11","Pantomime visit: Years 5 and 6",{years:[5,6],src:"Primary key dates"}),
+E("2026-12-14","Pantomime visit: Reception",{years:[0],src:"Primary key dates"}),
+E("2026-12-14","Grade Cards: Years 7, 8, 10 and 12",{years:[7,8,10,12],src:"Parent Information Pack"}),
+E("2026-12-15","Pantomime visits: Years 1–4",{years:[1,2,3,4],src:"Primary key dates"}),
+E("2026-12-17","School closes for Christmas",{time:"15:45",src:"Parent Information Pack"}),
+E("2027-01-05","School reopens after Christmas",{src:"Parent Information Pack"}),
+E("2027-01-05","Year 13 mock exams",{end:"2027-01-15",years:[13],src:"Parent Information Pack"}),
+E("2027-01-21","Year 8 GCSE Curriculum Evening",{years:[8],src:"Parent Information Pack",note:"Date changed from the paper pack because of the Morzine trip."}),
+E("2027-01-25","Year 11 Mock Exam Grade Card",{years:[11],src:"Parent Information Pack"}),
+E("2027-01-26","Year 11 Parents’ Evening",{years:[11],src:"Parent Information Pack"}),
+E("2027-02-03","Year 8 Parents’ Evening",{years:[8],src:"Parent Information Pack"}),
+E("2027-02-08","PTA Spring Disco: Years 5–8",{years:[5,6,7,8],src:"PTA Newsletter"}),
+E("2027-02-10","Year 13 Mock Exam Grade Card",{years:[13],src:"Parent Information Pack"}),
+E("2027-02-11","Year 13 Parents’ Evening",{years:[13],src:"Parent Information Pack"}),
+E("2027-02-12","School closes for February half-term",{time:"15:45",src:"Parent Information Pack"}),
+E("2027-02-22","School reopens after February half-term",{src:"Parent Information Pack"}),
+E("2027-02-22","Year 10 mock exams",{end:"2027-03-05",years:[10],src:"Parent Information Pack"}),
+E("2027-02-22","PTA Spring Disco: EYFS–Year 4",{years:[0,1,2,3,4],src:"PTA Newsletter"}),
+E("2027-03-05","PTA “Special Someone” event",{src:"PTA Newsletter"}),
+E("2027-03-11","Year 12 mock exams",{end:"2027-03-24",years:[12],src:"Parent Information Pack"}),
+E("2027-03-17","Spring Parents’ Evening one (Reception–Year 6)",{years:P,src:"Parent Information Pack"}),
+E("2027-03-23","Spring Parents’ Evening two (Reception–Year 6)",{years:P,src:"Parent Information Pack"}),
+E("2027-03-24","Grade Cards: Years 7, 8 and 9",{years:[7,8,9],src:"Parent Information Pack"}),
+E("2027-03-24","School closes for Easter",{time:"15:45",src:"Parent Information Pack"}),
+E("2027-04-12","School reopens after Easter",{src:"Parent Information Pack"}),
+E("2027-04-13","Year 10 Mock Exam Grade Card",{years:[10],src:"Parent Information Pack"}),
+E("2027-04-14","Year 10 Parents’ Evening",{years:[10],src:"Parent Information Pack"}),
+E("2027-04-28","Year 12 Mock Exam Grade Card",{years:[12],src:"Parent Information Pack"}),
+E("2027-04-29","Year 12 Parents’ Evening",{years:[12],src:"Parent Information Pack"}),
+E("2027-05-03","School closed: May Day bank holiday",{src:"Parent Information Pack"}),
+E("2027-05-10","Year 6 KS2 SATs week",{end:"2027-05-14",years:[6],src:"Parent Information Pack"}),
+E("2027-05-28","School closes for May half-term",{time:"15:45",src:"Parent Information Pack"}),
+E("2027-06-07","School reopens after May half-term",{src:"Parent Information Pack"}),
+E("2027-06-18","PTA “Special Someone” event",{src:"PTA Newsletter"}),
+E("2027-07-12","Class teacher reports (Reception–Year 6) and Extended Grade Cards (Years 7–10)",{src:"Parent Information Pack"}),
+E("2027-07-14","School closes for summer",{time:"14:45",src:"Parent Information Pack"})
+];
+
+/* ============ shared state ============ */
+const cap={sample:null,db:null,downloads:null,user:null,uid:null,canWrite:null,isOwner:false};
+let updates=[]; // parent-added: {id,authorId,title,text,date,years,at}
+let dbLoaded=false;
+const selYears=new Set((S.years||[]).filter(n=>typeof n==="number"));
+
+function allDocs(){
+  const pu=updates.map(u=>({id:"pu-"+u.id,title:u.title,topic:"Parent-added",years:u.years&&u.years.length?u.years:null,src:"Parent-added (unofficial)",dl:u.date?fmtIso(u.date):"",kw:"parent added unofficial",text:u.text,unofficial:true}));
+  return KB.concat(pu);
+}
+function allEvents(){
+  const pe=updates.filter(u=>u.date).map(u=>({id:"pe-"+u.id,date:u.date,title:u.title,years:u.years&&u.years.length?u.years:null,where:"",note:u.text.slice(0,160),src:"Parent-added (unofficial)",deadline:false,unofficial:true}));
+  return EV.concat(pe);
+}
+function evStart(e){return pd(e.date,e.time)}
+function evLastDay(e){return pd(e.end||e.date)}
+function isPast(e){return evLastDay(e).getTime()+DAY<=Date.now()}
+function matchesYears(years){
+  if(!selYears.size)return true;if(!years||!years.length)return true;
+  return years.some(y=>selYears.has(y));
+}
+
+/* ============ search engine ============ */
+const STOP=new Set("the a an is are was were of to for and or in on at what when where how do does did i my me can we our it its this that about with be there any you your please need know tell have has get should would could will school kings priory kps who which much many from by as if not no am year years yr group class call calls ring".split(" "));
+const INTENT={call:["phone","contact","number"],calls:["phone","contact","number"],ring:["phone","contact","number"],speak:["contact","email"],talk:["contact","email"],reach:["contact","phone"],message:["email","contact","arbor"]};
+const SYN={
+phone:["mobile","pouch","smartwatch","device"],mobile:["phone","pouch"],pouch:["phone","mobile"],smartwatch:["phone","pouch"],
+lunch:["meal","dinner","cafe"],dinner:["meal","lunch"],food:["meal","lunch"],meal:["lunch"],canteen:["meal","cafe"],
+pay:["payment","arbor","cost"],payment:["pay","arbor"],cost:["price","pay"],price:["cost"],money:["pay","cost","meal"],
+ill:["absence","sick","attendance"],sick:["absence","ill","attendance"],absent:["absence","attendance"],absence:["attendance","report"],
+late:["lateness","punctuality","detention"],lateness:["late","detention"],
+homework:["sparx","spellings"],sparx:["homework","maths","reader"],maths:["sparx"],reading:["sparx","reader"],
+club:["enrichment","clubs"],clubs:["club","enrichment"],activities:["clubs","enrichment"],
+teacher:["tutor","class"],tutor:["teacher","form"],
+evening:["parents","appointment","schoolcloud"],appointment:["schoolcloud","parents","booking"],booking:["schoolcloud","book"],
+uniform:["kit","pe","shoes","jumper","tie"],kit:["uniform","pe"],shoes:["uniform","trainers"],
+holiday:["term","dates","closes","opens"],holidays:["term","dates"],halfterm:["term"],"half-term":["term","dates"],inset:["term","closed"],
+contact:["email","phone","who"],email:["contact"],number:["phone","contact"],
+safeguarding:["welfare","dsl","concern"],worried:["safeguarding","concern","welfare"],bullying:["behaviour","online","safeguarding"],
+whatsapp:["online","group","chat"],snapchat:["online","chat"],
+pta:["fundraising","disco","fair","wreath","tree"],disco:["pta"],fair:["pta","christmas"],
+christmas:["panto","nativity","performance","christingle","fair"],nativity:["christmas","performance"],play:["performance","christmas"],
+detention:["behaviour","late"],report:["grade","reports"],grade:["card","report"],
+login:["arbor","sparx","password"],password:["login","reset"],
+free:["fsm","universal"],fsm:["free","meals"],trip:["residential","visit"],residential:["trip","robinwood"],
+open:["opening","evening"],finish:["end","times"],start:["times","registration"],times:["start","finish"],
+hockey:["clubs"],football:["clubs"],gym:["pe","kit"],pe:["kit","uniform"],
+calculator:["equipment","casio"],pen:["equipment"],
+bus:["metro"],metro:["exit"],
+halloween:["story","competition"],story:["halloween","competition","writing"]
+};
+function stem(w){
+  if(w.length>5&&/ing$/.test(w))return w.slice(0,-3);
+  if(w.length>4&&/ies$/.test(w))return w.slice(0,-3)+"y";
+  if(w.length>4&&/es$/.test(w)&&!/(ches|shes|sses)$/.test(w))return w.slice(0,-1);
+  if(w.length>3&&/s$/.test(w)&&!/ss$/.test(w))return w.slice(0,-1);
+  return w;
+}
+function tokens(q){
+  const raw=q.toLowerCase().replace(/[’']/g,"").replace(/[^a-z0-9£.\-\s]/g," ").split(/\s+/).filter(Boolean);
+  const main=[];raw.forEach(w=>{if(INTENT[w])INTENT[w].forEach(x=>{if(main.indexOf(x)<0)main.push(x)});if(!STOP.has(w)&&w.length>1&&main.indexOf(w)<0)main.push(w)});
+  const syn=[];main.forEach(w=>{(SYN[w]||SYN[stem(w)]||[]).forEach(s=>{if(main.indexOf(s)<0&&syn.indexOf(s)<0)syn.push(s)})});
+  return{main:main.map(stem),syn:syn.map(stem),raw:main};
+}
+function countIn(hay,needle){let c=0,i=0;while((i=hay.indexOf(needle,i))>=0){c++;i+=needle.length}return c}
+function queryYears(q){
+  const out=[];const low=q.toLowerCase();
+  if(/\breception\b|\byear r\b/.test(low))out.push(0);
+  const re=/\b(?:year|yr|y)\s?(\d{1,2})\b/g;let m;
+  while((m=re.exec(low))){const n=Number(m[1]);if(n>=1&&n<=13&&out.indexOf(n)<0)out.push(n)}
+  return out;
+}
+function scoreDoc(d,t,q){
+  const title=d.title.toLowerCase(),kw=(d.kw||"").toLowerCase(),topic=d.topic.toLowerCase(),text=d.text.toLowerCase();
+  let s=0;
+  t.main.forEach(w=>{
+    if(title.indexOf(w)>=0)s+=6;
+    if(kw.indexOf(w)>=0)s+=4;
+    if(topic.indexOf(w)>=0)s+=2;
+    s+=Math.min(countIn(text,w),4)*1.2;
+  });
+  t.syn.forEach(w=>{
+    if(title.indexOf(w)>=0)s+=2.2;
+    if(kw.indexOf(w)>=0)s+=1.8;
+    s+=Math.min(countIn(text,w),3)*0.4;
+  });
+  const phrase=q.toLowerCase().replace(/[’']/g,"").trim();
+  if(phrase.length>3&&text.indexOf(phrase)>=0)s+=5;
+  if(s>0){
+    const qy=queryYears(q);
+    if(qy.length&&d.years&&d.years.length){s+=d.years.some(y=>qy.indexOf(y)>=0)?5:-5}
+    if(selYears.size&&!qy.length){
+      if(d.years&&d.years.length){const hit=d.years.some(y=>selYears.has(y));s+=hit?4:-6}
+    }
+    if(d.unofficial)s*=0.85;
+  }
+  return s;
+}
+function searchDocs(q,limit){
+  const t=tokens(q);if(!t.main.length&&!t.syn.length)return[];
+  return allDocs().map(d=>({d,s:scoreDoc(d,t,q)})).filter(x=>x.s>0).sort((a,b)=>b.s-a.s).slice(0,limit||8);
+}
+function snippet(text,t){
+  const low=text.toLowerCase();let at=-1;
+  const all=t.main.concat(t.syn);
+  for(const w of all){const i=low.indexOf(w);if(i>=0){at=i;break}}
+  if(at<0)return text.slice(0,220)+(text.length>220?"…":"");
+  const from=Math.max(0,at-90),to=Math.min(text.length,at+170);
+  return(from>0?"…":"")+text.slice(from,to).replace(/\n/g," ")+(to<text.length?"…":"");
+}
+function markInto(el,text,words){
+  if(!words.length){el.append(document.createTextNode(text));return el}
+  const esc=words.map(w=>w.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")).sort((a,b)=>b.length-a.length);
+  const re=new RegExp("("+esc.join("|")+")","gi");
+  text.split(re).forEach((p,i)=>{if(!p)return;if(i%2===1)el.append(h("mark",{text:p}));else el.append(document.createTextNode(p))});
+  return el;
+}
+
+/* ============ tabs ============ */
+const TABS=["ask","search","dates","contacts"];
+function showTab(name,focus){
+  TABS.forEach(t=>{
+    const on=t===name;
+    $("#p-"+t).hidden=!on;
+    const b=$("#t-"+t);b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1;
+  });
+  if(name==="dates")renderDates();
+  if(name==="contacts")renderContacts();
+  if(focus){const hd=$("#h-"+name);if(hd){hd.tabIndex=-1;hd.focus({preventScroll:false})}}
+  window.scrollTo(0,0);
+}
+$$("nav.tabs [role=tab]").forEach(b=>{
+  b.addEventListener("click",()=>showTab(b.dataset.tab,true));
+  b.addEventListener("keydown",e=>{
+    const i=TABS.indexOf(b.dataset.tab);let n=-1;
+    if(e.key==="ArrowRight")n=(i+1)%TABS.length;else if(e.key==="ArrowLeft")n=(i-1+TABS.length)%TABS.length;
+    else if(e.key==="Home")n=0;else if(e.key==="End")n=TABS.length-1;
+    if(n>=0){e.preventDefault();showTab(TABS[n],false);$("#t-"+TABS[n]).focus()}
+  });
+});
+
+/* ============ year chips ============ */
+function renderYearChips(){
+  const box=$("#yearChips");box.textContent="";
+  for(let n=0;n<=13;n++){
+    const b=h("button",{class:"chip",type:"button","aria-pressed":selYears.has(n)?"true":"false",text:n===0?"Reception":String(n),"aria-label":nm(n)});
+    b.addEventListener("click",()=>{
+      if(selYears.has(n))selYears.delete(n);else selYears.add(n);
+      S.years=Array.from(selYears);saveS();renderYearChips();refreshAll();
+    });
+    box.append(b);
+  }
+  const arr=Array.from(selYears).sort((a,b)=>a-b);
+  $("#yearsSummary").textContent=arr.length?"Showing: "+yl(arr)+" (tap to change)":"Which year group(s) are your children in? (optional)";
+}
+function refreshAll(){
+  renderSoon();
+  if(!$("#p-dates").hidden)renderDates();
+  if(!$("#p-search").hidden)runSearch();
+}
+
+/* ============ ask: soon list + chips ============ */
+function eventRow(e,opts){
+  const d=evStart(e);const o=opts||{};
+  const dateBox=h("div",{class:"date","aria-hidden":"true"},h("b",{text:String(d.getDate())}),h("span",{text:d.toLocaleDateString("en-GB",{month:"short"})}));
+  let when=fmtDate(d);
+  if(e.end){when=fmtDate(d)+" – "+fmtDate(pd(e.end))}
+  if(e.time)when+=" · "+e.time+(e.until?"–"+e.until:"");
+  const r=rel(evLastDay(e).getTime()<startOfToday().getTime()?evLastDay(e):d);
+  const info=h("div",{class:"info"},
+    h("h3",{},e.title),
+    h("div",{class:"when"},when+(r?" ("+r+")":"")),
+    e.where?h("div",{class:"when"},"📍 "+e.where):null,
+    e.note?h("div",{class:"small"},e.note):null,
+    h("div",{class:"meta",style:"margin-top:.25rem"},
+      e.deadline?h("span",{class:"tag deadline"},"Deadline"):null,
+      e.unofficial?h("span",{class:"tag unofficial"},"Parent-added"):null,
+      h("span",{class:"tag"},yl(e.years)),
+      e.src?h("span",{},"Source: "+e.src):null)
+  );
+  const row=h("div",{class:"ev"+(isPast(e)?" past":"")},dateBox,info);
+  if(o.cal){
+    const b=h("button",{class:"btn ghost small",type:"button","aria-label":"Add "+e.title+" to calendar"},"Add to calendar");
+    b.addEventListener("click",()=>saveIcs([e],safeName(e.title)+".ics",b));
+    info.append(h("div",{style:"margin-top:.4rem"},b));
+  }
+  return row;
+}
+function upcoming(filterYears){
+  return allEvents().filter(e=>!isPast(e)&&(!filterYears||matchesYears(e.years))).sort((a,b)=>evStart(a)-evStart(b));
+}
+function renderSoon(){
+  const box=$("#soonList");box.textContent="";
+  const list=upcoming(true).filter(e=>evStart(e)-startOfToday()<=21*DAY).slice(0,4);
+  if(!list.length){box.append(h("p",{class:"empty"},"Nothing in the next three weeks for your selection. Check the Dates tab for later in the term."));return}
+  list.forEach(e=>box.append(eventRow(e)));
+  const more=h("button",{class:"btn ghost small",type:"button"},"See all dates");
+  more.addEventListener("click",()=>showTab("dates",true));box.append(more);
+}
+const QUICK=["What’s on in the next two weeks?","Phone pouches: what do I need to do?","How do I report an absence?","When are parents’ evenings?","School lunch: cost and how to pay","What clubs are on after school?","What are the uniform rules?","Who do I contact?"];
+function renderQuick(){
+  const box=$("#quickChips");box.textContent="";
+  QUICK.forEach(q=>{const b=h("button",{class:"chip",type:"button",text:q});b.addEventListener("click",()=>ask(q));box.append(b)});
+}
+
+/* ============ rich text for answers ============ */
+function richInto(el,text){
+  el.textContent="";
+  const lines=text.replace(/\r/g,"").split("\n");
+  let ul=null;
+  const inline=(parent,str)=>{
+    str.split(/(\*\*[^*]+\*\*)/g).forEach(p=>{
+      if(!p)return;
+      if(/^\*\*[^*]+\*\*$/.test(p))parent.append(h("strong",{},linked(h("span"),p.slice(2,-2))));
+      else linked(parent,p);
+    });
+  };
+  lines.forEach(line=>{
+    const m=line.match(/^\s*(?:[-•*]|\d+[.)])\s+(.*)$/);
+    if(m){if(!ul){ul=h("ul");el.append(ul)}const li=h("li");inline(li,m[1]);ul.append(li)}
+    else if(line.trim()===""){ul=null}
+    else{ul=null;const p=h("p");inline(p,line);el.append(p)}
+  });
+}
+
+/* ============ ask (works for everyone, no sign-in) ============ */
+const history=[];
+function langCode(){return"en-GB"}
+function speak(text,btn){
+  if(!("speechSynthesis" in window))return;
+  try{
+    window.speechSynthesis.cancel();
+    if(btn&&btn.dataset.on==="1"){btn.dataset.on="0";btn.textContent="🔊 Read aloud";return}
+    $$("[data-speak]").forEach(b=>{b.dataset.on="0";b.textContent="🔊 Read aloud"});
+    const u=new SpeechSynthesisUtterance(text.replace(/\*\*/g,""));u.lang=langCode();
+    u.onend=()=>{if(btn){btn.dataset.on="0";btn.textContent="🔊 Read aloud"}};
+    if(btn){btn.dataset.on="1";btn.textContent="⏹ Stop reading"}
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function addMsg(who){
+  const m=h("div",{class:"msg "+(who==="me"?"me":"bot")});
+  const body=h("div",{class:"body"});m.append(body);
+  $("#log").append(m);return{m,body};
+}
+function goToDoc(id){
+  showTab("search",false);$("#sq").value="";$("#results").textContent="";topicFilter="All";renderTopicChips();
+  const d=allDocs().find(x=>x.id===id);if(!d)return;
+  const card=docCard(d,{open:true,words:[]});$("#results").append(card);
+  card.classList.add("flash");setTimeout(()=>card.classList.remove("flash"),2500);
+  const hd=$("#h-search");hd.tabIndex=-1;hd.focus();
+}
+function sourceChips(docs,label){
+  if(!docs.length)return null;
+  const box=h("div",{class:"src"},h("div",{class:"meta"},label));
+  docs.forEach(d=>{const b=h("button",{type:"button"},d.title+(d.dl?" · "+d.dl:""));b.addEventListener("click",()=>goToDoc(d.id));box.append(b)});
+  return box;
+}
+function bestLines(d,t,n){
+  let lines=[];
+  d.text.split(/\n+/).forEach(l=>{l=l.trim();if(!l)return;if(l.length>240)l.split(/(?<=[.;])\s+| · /).forEach(x=>{x=x.trim();if(x)lines.push(x)});else lines.push(l)});
+  const scored=lines.map((l,i)=>{
+    const low=l.toLowerCase();let sc=0;
+    t.main.forEach(w=>{if(low.indexOf(w)>=0)sc+=3});
+    t.syn.forEach(w=>{if(low.indexOf(w)>=0)sc+=1});
+    return{l,i,sc};
+  });
+  let top=scored.filter(x=>x.sc>0).sort((a,b)=>b.sc-a.sc).slice(0,n).sort((a,b)=>a.i-b.i);
+  if(!top.length)top=scored.slice(0,Math.min(2,scored.length));
+  return top.map(x=>x.l);
+}
+function rangeFromQuery(q){
+  const low=q.toLowerCase().replace(/[’']/g,"");
+  const today=startOfToday();
+  if(/\bdeadlines?\b|due soon|due this|due next/.test(low))return{label:"Upcoming deadlines",days:60,deadlinesOnly:true};
+  if(/next (two|2) weeks|fortnight/.test(low))return{label:"The next two weeks",days:14};
+  if(/(this|next|coming) week|week ahead|rest of the week/.test(low))return{label:"The next 7 days",days:7};
+  if(/(this|next|coming) month/.test(low))return{label:"The next 30 days",days:30};
+  if(/coming up|whats on|what is on|upcoming|\bon soon\b|whats happening|happening/.test(low))return{label:"Coming up",days:21};
+  return null;
+}
+function answerLocal(q,bot){
+  const body=bot.body;body.textContent="";
+  const spoken=[];
+  const rg=rangeFromQuery(q);
+  const qy=queryYears(q);
+  if(rg){
+    const yrs=qy.length?new Set(qy):selYears;
+    let list=upcoming(false).filter(e=>evStart(e)-startOfToday()<=rg.days*DAY);
+    if(yrs.size)list=list.filter(e=>!e.years||!e.years.length||e.years.some(y=>yrs.has(y)));
+    if(rg.deadlinesOnly)list=list.filter(e=>e.deadline);
+    body.append(h("p",{},h("strong",{},rg.label+(yrs.size?" for "+yl(Array.from(yrs)):"")+":")));
+    if(!list.length)body.append(h("p",{},"Nothing found in that time. Check the Dates tab for later in the term."));
+    list.slice(0,12).forEach(e=>{body.append(eventRow(e,{cal:true}));spoken.push(e.title+", "+fmtDate(evStart(e),true))});
+    if(list.length>12){const b=h("button",{class:"btn ghost small",type:"button"},"See all in Dates");b.addEventListener("click",()=>showTab("dates",true));body.append(b)}
+    return spoken.join(". ");
+  }
+  const hits=searchDocs(q,5);
+  if(!hits.length){
+    body.append(h("p",{},"I couldn’t find anything about that in the school documents. Try different words (for example “lunch”, “absence”, “clubs”), or contact the school: see the Contacts tab."));
+    const b=h("button",{class:"btn ghost small",type:"button"},"Open Contacts");b.addEventListener("click",()=>showTab("contacts",true));body.append(b);
+    const b2=h("button",{class:"btn ghost small",type:"button",style:"margin-left:.4rem"},"✉ Ask for this to be added");b2.addEventListener("click",openSuggest);body.append(b2);
+    return"";
+  }
+  const t=tokens(q);
+  body.append(h("p",{},h("strong",{},"Here’s what the school documents say:")));
+  const top=hits[0].s;
+  const main=hits.filter((x,i)=>i===0||(i<2&&x.s>=top*0.6));
+  main.forEach(x=>{
+    const lines=bestLines(x.d,t,x.d===main[0].d?4:2);
+    const sec=h("div",{class:"result"},h("h3",{},x.d.title));
+    const ul=h("ul",{style:"margin:.2rem 0 .4rem;padding-left:1.2rem"});
+    lines.forEach(l=>{const li=h("li");linked(li,l);ul.append(li);spoken.push(l)});
+    sec.append(ul);
+    sec.append(h("div",{class:"meta"},"Source: "+x.d.src+(x.d.dl?" · "+x.d.dl:"")));
+    const b=h("button",{class:"btn ghost small",type:"button",style:"margin-top:.4rem"},"Read the full entry");b.addEventListener("click",()=>goToDoc(x.d.id));sec.append(b);
+    body.append(sec);
+  });
+  const rest=hits.filter(x=>main.indexOf(x)<0).slice(0,3).map(x=>x.d);
+  const sc=sourceChips(rest,"Also related:");if(sc)bot.m.append(sc);
+  return spoken.join(". ");
+}
+function ask(q){
+  q=(q||"").trim();if(!q)return;
+  if($("#p-ask").hidden)showTab("ask",false);
+  const me=addMsg("me");me.body.textContent=q;
+  const bot=addMsg("bot");
+  $("#q").value="";$("#clear").hidden=false;
+  const spoken=answerLocal(q,bot);
+  const tools=h("div",{class:"tools"});
+  if(spoken&&"speechSynthesis" in window){
+    const sb=h("button",{class:"btn ghost small",type:"button","data-speak":"1",text:"🔊 Read aloud"});
+    sb.addEventListener("click",()=>speak(spoken,sb));tools.append(sb);
+    if(S.autoread)speak(spoken,sb);
+  }
+  if(tools.children.length)bot.m.append(tools);
+  bot.m.append(h("p",{class:"meta"},"Taken straight from the school’s documents. Dates can change, so check Arbor or the school for anything important."));
+  history.push(q);
+  bot.m.scrollIntoView({block:"nearest"});
+}
+$("#send").addEventListener("click",()=>ask($("#q").value));
+$("#q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();ask($("#q").value)}});
+$("#clear").addEventListener("click",()=>{history.length=0;$("#log").textContent="";$("#clear").hidden=true;try{window.speechSynthesis&&window.speechSynthesis.cancel()}catch(e){}});
+
+/* voice input */
+(function(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR)return;
+  const mic=$("#mic");mic.hidden=false;let rec=null,on=false;
+  mic.addEventListener("click",()=>{
+    if(on&&rec){try{rec.stop()}catch(e){}return}
+    try{
+      rec=new SR();rec.lang=langCode();rec.interimResults=true;rec.maxAlternatives=1;
+      const base=$("#q").value;
+      rec.onresult=ev=>{let t="";for(let i=0;i<ev.results.length;i++)t+=ev.results[i][0].transcript;$("#q").value=(base?base+" ":"")+t};
+      rec.onend=()=>{on=false;mic.setAttribute("aria-pressed","false");mic.setAttribute("aria-label","Speak your question")};
+      rec.onerror=()=>{on=false;mic.setAttribute("aria-pressed","false");mic.hidden=true};
+      rec.start();on=true;mic.setAttribute("aria-pressed","true");mic.setAttribute("aria-label","Stop listening");
+    }catch(e){mic.hidden=true}
+  });
+})();
+
+/* ============ search tab ============ */
+let topicFilter="All";
+function topics(){const m={};allDocs().forEach(d=>{m[d.topic]=(m[d.topic]||0)+1});return Object.keys(m).sort()}
+function renderTopicChips(){
+  const box=$("#topicChips");box.textContent="";
+  ["All"].concat(topics()).forEach(t=>{
+    const b=h("button",{class:"chip",type:"button","aria-pressed":topicFilter===t?"true":"false",text:t});
+    b.addEventListener("click",()=>{topicFilter=t;renderTopicChips();runSearch()});box.append(b);
+  });
+}
+function docCard(d,o){
+  const words=(o&&o.words)||[];
+  const card=h("article",{class:"result",id:"doc-"+d.id});
+  card.append(h("h3",{},d.title));
+  card.append(h("div",{class:"meta"},
+    d.unofficial?h("span",{class:"tag unofficial"},"Parent-added"):null,
+    h("span",{class:"tag"},d.topic),h("span",{class:"tag"},yl(d.years))));
+  const txt=h("div",{class:"txt"});
+  const t=(o&&o.t)||{main:[],syn:[]};
+  let open=!!(o&&o.open);
+  function paint(){
+    txt.textContent="";
+    if(open)markInto(txt,d.text,words.length?words:[]);
+    else{const sn=words.length?snippet(d.text,t):(d.text.slice(0,200)+(d.text.length>200?"…":""));markInto(txt,sn,words)}
+    if(open)linkAll(txt);
+    tgl.textContent=open?"Show less":"Read the full entry";
+    tgl.setAttribute("aria-expanded",open?"true":"false");
+  }
+  const tgl=h("button",{class:"btn ghost small",type:"button"});
+  tgl.addEventListener("click",()=>{open=!open;paint()});
+  card.append(txt);
+  card.append(h("div",{class:"meta"},"Source: "+d.src+(d.dl?" · "+d.dl:"")));
+  card.append(h("div",{style:"margin-top:.4rem"},tgl));
+  paint();
+  return card;
+}
+function linkAll(el){
+  // turn emails / urls / phone numbers inside already-built text into links
+  const walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);const nodes=[];
+  while(walker.nextNode())nodes.push(walker.currentNode);
+  nodes.forEach(n=>{
+    if(n.parentNode&&n.parentNode.tagName==="A")return;
+    LINKRE.lastIndex=0;
+    if(!LINKRE.test(n.nodeValue))return;
+    const frag=document.createDocumentFragment();
+    String(n.nodeValue).split(LINKRE).forEach((part,i)=>{
+      if(i%2===0){if(part)frag.append(document.createTextNode(part));return}
+      let href;if(part.indexOf("@")>0&&part.indexOf("http")!==0)href="mailto:"+part;
+      else if(/^0191/.test(part))href="tel:+44"+part.replace(/\s/g,"").slice(1);else href=part;
+      const a=h("a",{href,text:part});if(/^http/.test(href)){a.target="_blank";a.rel="noopener noreferrer"}frag.append(a);
+    });
+    n.parentNode.replaceChild(frag,n);
+  });
+}
+function runSearch(){
+  const q=$("#sq").value.trim();const box=$("#results");box.textContent="";
+  if(q){
+    const t=tokens(q);
+    let hits=searchDocs(q,12);
+    if(topicFilter!=="All")hits=hits.filter(x=>x.d.topic===topicFilter);
+    if(!hits.length){
+      box.append(h("p",{class:"empty"},"Nothing found for “"+q+"”. Try fewer or different words, for example “lunch”, “absence” or “clubs”, or browse by topic above."));
+      return;
+    }
+    box.append(h("p",{class:"muted small"},hits.length+" result"+(hits.length===1?"":"s")+(selYears.size?" (best matches for your year groups first)":"")));
+    hits.forEach(x=>box.append(docCard(x.d,{words:t.main.concat(t.raw),t})));
+  }else{
+    let docs=allDocs();if(topicFilter!=="All")docs=docs.filter(d=>d.topic===topicFilter);
+    docs=docs.slice().sort((a,b)=>a.topic.localeCompare(b.topic)||a.title.localeCompare(b.title));
+    let last="";
+    docs.forEach(d=>{
+      if(d.topic!==last){last=d.topic;box.append(h("h3",{class:"dayhead"},d.topic))}
+      const rel=!selYears.size||!d.years||d.years.some(y=>selYears.has(y));
+      if(rel)box.append(docCard(d,{words:[]}));
+    });
+    if(!box.children.length)box.append(h("p",{class:"empty"},"No documents here for your selected years."));
+  }
+}
+$("#searchForm").addEventListener("submit",e=>{e.preventDefault();runSearch()});
+$("#sq").addEventListener("input",()=>{clearTimeout(runSearch._t);runSearch._t=setTimeout(runSearch,220)});
+
+/* ============ dates tab ============ */
+let onlyMine=false,showPast=false;
+function safeName(s){return s.replace(/[^\w\-]+/g,"-").replace(/-+/g,"-").slice(0,50)||"event"}
+function icsEsc(s){return String(s||"").replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/\r?\n/g,"\\n")}
+function fold(line){const out=[];let l=line;while(l.length>73){out.push(l.slice(0,73));l=" "+l.slice(73)}out.push(l);return out.join("\r\n")}
+function dstr(d){return d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0")}
+function makeIcs(list){
+  const stamp=new Date().toISOString().replace(/[-:]/g,"").replace(/\.\d+/,"");
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//KPS Parent Helper//EN","CALSCALE:GREGORIAN","METHOD:PUBLISH"];
+  list.forEach((e,i)=>{
+    L.push("BEGIN:VEVENT","UID:"+e.date+"-"+i+"-"+safeName(e.title)+"@kps-parent-helper","DTSTAMP:"+stamp);
+    if(e.time){
+      const s=pd(e.date,e.time);let en;
+      if(e.until)en=pd(e.date,e.until);else en=new Date(s.getTime()+3600000);
+      const f=d=>dstr(d)+"T"+String(d.getHours()).padStart(2,"0")+String(d.getMinutes()).padStart(2,"0")+"00";
+      L.push("DTSTART:"+f(s),"DTEND:"+f(en));
+    }else{
+      const s=pd(e.date);const en=new Date(pd(e.end||e.date).getTime()+DAY+3600000);en.setHours(0,0,0,0);
+      L.push("DTSTART;VALUE=DATE:"+dstr(s),"DTEND;VALUE=DATE:"+dstr(en));
+    }
+    L.push("SUMMARY:"+icsEsc(e.title));
+    if(e.where)L.push("LOCATION:"+icsEsc(e.where));
+    L.push("DESCRIPTION:"+icsEsc((e.note?e.note+" ":"")+"Source: "+(e.src||"school")+". Dates can change – check Arbor."));
+    if(e.deadline)L.push("BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:Deadline","TRIGGER:-P1D","END:VALARM");
+    L.push("END:VEVENT");
+  });
+  L.push("END:VCALENDAR");
+  return L.map(fold).join("\r\n");
+}
+async function saveIcs(list,filename,btn){
+  const label=btn?btn.textContent:"";
+  const flash=(t)=>{if(btn){btn.textContent=t;setTimeout(()=>btn.textContent=label,2400)}};
+  const data=makeIcs(list);
+  if(cap.downloads){
+    try{await cap.downloads.save({filename,data});flash("Saved ✓");return}
+    catch(e){if(e&&e.code==="declined")return}
+  }
+  try{
+    const blob=new Blob([data],{type:"text/calendar"});
+    const url=URL.createObjectURL(blob);
+    const a=h("a",{href:url,download:filename});document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),4000);
+    flash("Downloading…");return;
+  }catch(e){}
+  const txt=list.map(e=>e.title+" — "+fmtDate(evStart(e),true)+(e.time?" "+e.time:"")).join("\n");
+  try{await navigator.clipboard.writeText(txt);flash("Details copied ✓")}catch(e){flash("Can’t save here")}
+}
+function shownEvents(){
+  let list=allEvents().filter(e=>showPast||!isPast(e));
+  if(onlyMine&&selYears.size)list=list.filter(e=>matchesYears(e.years));
+  return list.sort((a,b)=>evStart(a)-evStart(b));
+}
+function renderDates(){
+  const box=$("#dates");box.textContent="";
+  $("#onlyMine").setAttribute("aria-pressed",onlyMine?"true":"false");
+  $("#showPast").setAttribute("aria-pressed",showPast?"true":"false");
+  const list=shownEvents();
+  $("#datesNote").textContent=(onlyMine&&!selYears.size)?"Choose your year groups at the top of the page to filter.":"Dates come from the school’s letters and can change. Check Arbor for the latest. "+list.length+" shown.";
+  if(!list.length){box.append(h("p",{class:"empty"},"No dates to show."));return}
+  const dl=list.filter(e=>e.deadline&&!isPast(e)).slice(0,5);
+  if(dl.length){
+    box.append(h("h3",{class:"dayhead"},"Next deadlines"));
+    dl.forEach(e=>box.append(eventRow(e,{cal:true})));
+  }
+  let month="";
+  list.forEach(e=>{
+    const d=evStart(e);const m=d.toLocaleDateString("en-GB",{month:"long",year:"numeric"});
+    if(m!==month){month=m;box.append(h("h3",{class:"dayhead"},m))}
+    box.append(eventRow(e,{cal:true}));
+  });
+}
+$("#onlyMine").addEventListener("click",()=>{onlyMine=!onlyMine;renderDates()});
+$("#showPast").addEventListener("click",()=>{showPast=!showPast;renderDates()});
+$("#addAll").addEventListener("click",e=>{const l=shownEvents().filter(x=>!isPast(x));if(l.length)saveIcs(l,"kps-dates.ics",e.currentTarget)});
+
+/* ============ contacts tab ============ */
+let contactsDone=false;
+function renderContacts(){
+  if(contactsDone)return;contactsDone=true;
+  const g=$("#contactGrid");
+  const card=(title,lines)=>h("div",{class:"card contact"},h("h3",{},title),lines);
+  const mail=(a)=>h("a",{class:"big",href:"mailto:"+a},a);
+  g.append(
+    card("Main reception (and emergencies)",[h("a",{class:"big",href:"tel:+441915802700"},"0191 580 2700"),h("p",{class:"small muted"},"To reach your child in an emergency, ring reception, not their phone.")]),
+    card("Reception – Year 4 (First School)",[mail("first@kps.woodard.co.uk")]),
+    card("Years 5 – 8 (Middle School)",[mail("middle@kps.woodard.co.uk")]),
+    card("Years 9 – 11 (Senior School)",[mail("senior@kps.woodard.co.uk")]),
+    card("Sixth Form",[mail("sixthform@kps.woodard.co.uk")]),
+    card("General enquiries (e.g. phone pouches)",[mail("enquiries@kps.woodard.co.uk")]),
+    card("Safeguarding (worried about a child)",[mail("safeguarding@kps.woodard.co.uk"),h("p",{class:"small muted"},"Designated Safeguarding Lead: Mrs K Pearson. In immediate danger, call 999.")]),
+    card("Online safety",[mail("e-safety@kps.woodard.co.uk"),h("p",{class:"small muted"},"Online Safety Officer: Mr B McIvor.")]),
+    card("PTA",[mail("kingsprioryschoolpta@gmail.com"),h("p",{class:"small muted"},"Volunteers and ideas always welcome. Also on Facebook: Kings Priory School PTA.")])
+  );
+  const L=$("#linkList");
+  [["Arbor (web login for this school)","https://kings-priory-school.uk.arbor.education/?/home-ui/index"],
+   ["SchoolCloud: book parents’ evening (Reception–Year 6)","https://kingsprioryschool.schoolcloud.co.uk/"],
+   ["School website","https://www.kingsprioryschool.co.uk/"],
+   ["Curriculum website","https://www.kingspriorycurriculum.co.uk/"],
+   ["Sparx Maths: parent information","https://sparxmaths.com/parents/"],
+   ["North Tyneside Council: free school meals","https://my.northtyneside.gov.uk/category/238/free-school-meals"],
+   ["Report online sexual exploitation or grooming (CEOP)","https://ceop.police.uk"]
+  ].forEach(l=>L.append(h("li",{},h("a",{href:l[1],target:"_blank",rel:"noopener noreferrer"},l[0]))));
+}
+
+/* ============ accessibility dialog ============ */
+const dlg=$("#a11y");
+function syncDlg(){
+  $$("input[name=theme]").forEach(r=>r.checked=r.value===S.theme);
+  $$("input[name=font]").forEach(r=>r.checked=r.value===S.font);
+  $("#o-spacing").checked=!!S.spacing;$("#o-motion").checked=!!S.motion;$("#o-autoread").checked=!!S.autoread;
+  $("#sizeOut").textContent=Math.round(S.scale*100)+"%";
+}
+if(!("speechSynthesis" in window))$("#autoReadRow").hidden=true;
+$("#openA11y").addEventListener("click",()=>{syncDlg();if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","")});
+$("#a11yClose").addEventListener("click",()=>dlg.close());
+$("#a11yReset").addEventListener("click",()=>{const yrs=S.years;S=Object.assign({},DEFAULTS,{years:yrs});saveS();applyS();syncDlg()});
+function stepScale(dir){
+  let i=SCALES.findIndex(v=>Math.abs(v-S.scale)<0.01);if(i<0)i=0;
+  i=Math.max(0,Math.min(SCALES.length-1,i+dir));S.scale=SCALES[i];saveS();applyS();
+}
+$("#sizeDown").addEventListener("click",()=>stepScale(-1));
+$("#sizeUp").addEventListener("click",()=>stepScale(1));
+$$("input[name=theme]").forEach(r=>r.addEventListener("change",()=>{if(r.checked){S.theme=r.value;saveS();applyS()}}));
+$$("input[name=font]").forEach(r=>r.addEventListener("change",()=>{if(r.checked){S.font=r.value;saveS();applyS()}}));
+$("#o-spacing").addEventListener("change",e=>{S.spacing=e.target.checked;saveS();applyS()});
+$("#o-motion").addEventListener("change",e=>{S.motion=e.target.checked;saveS();applyS()});
+$("#o-autoread").addEventListener("change",e=>{S.autoread=e.target.checked;saveS()});
+
+/* ============ capabilities ============ */
+async function initCaps(){
+  // Optional extra: lets the calendar button use the viewer's own save dialog when available.
+  // Everything else in this app works without any sign-in.
+  try{
+    if(window.claude&&typeof window.claude.use==="function")cap.downloads=await window.claude.use("downloads");
+  }catch(e){cap.downloads=null}
+}
+
+/* ============ ask for an addition (address is kept out of the page text) ============ */
+const SG_USER="eleanor.graham",SG_HOST="northumbria.ac.uk";
+function sgAddr(){return SG_USER+"@"+SG_HOST}
+function sgSubject(){return"KPS Parent Helper: suggested addition"}
+function sgBody(){return $("#sgText").value.trim()+"\n\n(Sent from the KPS Parent Helper page)"}
+const sgDlg=$("#suggest");
+function openSuggest(){$("#sgMsg").textContent="";if(sgDlg.showModal)sgDlg.showModal();else sgDlg.setAttribute("open","");setTimeout(()=>$("#sgText").focus(),50)}
+$$("[data-suggest]").forEach(b=>b.addEventListener("click",openSuggest));
+$("#sgClose").addEventListener("click",()=>sgDlg.close());
+function sgCheck(){if($("#sgText").value.trim().length<5){$("#sgMsg").textContent="Please say what should be added or fixed.";$("#sgText").focus();return false}return true}
+$("#sgMail").addEventListener("click",()=>{
+  if(!sgCheck())return;
+  const href="mailto:"+sgAddr()+"?subject="+encodeURIComponent(sgSubject())+"&body="+encodeURIComponent(sgBody());
+  const a=h("a",{href});document.body.append(a);a.click();a.remove();
+  $("#sgMsg").textContent="If your email app didn’t open, use “Copy message and address” instead.";
+});
+$("#sgCopy").addEventListener("click",async()=>{
+  if(!sgCheck())return;
+  const txt="To: "+sgAddr()+"\nSubject: "+sgSubject()+"\n\n"+sgBody();
+  try{await navigator.clipboard.writeText(txt);$("#sgMsg").textContent="Copied. Paste it into a new email."}
+  catch(e){$("#sgMsg").textContent="Couldn’t copy automatically. Please ask the school office to pass your request on."}
+});
+
+/* ============ init ============ */
+applyS();syncDlg();
+renderYearChips();renderQuick();renderSoon();renderTopicChips();runSearch();
+$("#soonList").closest(".card").querySelector("h3").textContent="Coming up soon";
+initCaps();
+})();
+</script>
+</body>
+</html>
