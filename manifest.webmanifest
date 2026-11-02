@@ -1,0 +1,17 @@
+{
+  "name": "KPS Family Helper",
+  "short_name": "KPS Family",
+  "description": "Find dates, deadlines and information from Kings Priory School letters. Made by a school family, not an official school service.",
+  "lang": "en-GB",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#14284b",
+  "theme_color": "#14284b",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
