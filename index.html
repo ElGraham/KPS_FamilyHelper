@@ -172,6 +172,15 @@ nav.tabs button[aria-selected="true"]{color:var(--primary);font-weight:700;box-s
 dialog{border:2px solid var(--border);border-radius:16px;background:var(--surface);color:var(--text);max-width:560px;width:calc(100% - 1.6rem);padding:1rem 1.1rem;max-height:90vh;overflow:auto}
 dialog::backdrop{background:rgba(0,0,0,.55)}
 dialog h2{margin:.1rem 0 .5rem;font-size:1.2rem}
+dialog ol{padding-left:1.3rem;margin:.3rem 0 .6rem}
+dialog li{margin:.4rem 0}
+dialog h3{margin:.9rem 0 .2rem;font-size:1.05rem;color:var(--primary)}
+.install-banner{background:var(--primary);color:var(--on-primary);border-radius:14px;padding:.8rem 1rem;margin:0 0 .9rem;display:flex;gap:.8rem;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.install-banner[hidden]{display:none}
+.install-banner .ib-btns{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+.install-banner .btn{background:var(--on-primary);color:var(--primary);border-color:var(--on-primary)}
+.install-banner .btn.ghost{background:transparent;color:var(--on-primary);border-color:var(--on-primary)}
+:root[data-theme="contrast"] .install-banner{border:2px solid #ffe600}
 fieldset{border:1px solid var(--border);border-radius:12px;margin:.6rem 0;padding:.5rem .8rem .7rem}
 legend{font-weight:700;padding:0 .3rem}
 .opt{display:flex;align-items:center;gap:.5rem;min-height:44px}
@@ -180,6 +189,22 @@ legend{font-weight:700;padding:0 .3rem}
 .sizectl{display:flex;align-items:center;gap:.6rem}
 .sizectl output{min-width:3.5rem;text-align:center;font-weight:700}
 .empty{color:var(--muted);padding:.6rem 0}
+.tag.new{background:var(--ok);color:var(--bg);border-color:var(--ok);font-weight:700}
+.newsrow{padding:.5rem 0;border-top:1px solid var(--border)}
+.newsrow:first-child{border-top:0}
+#printArea{display:none}
+@media print{
+  body.printing>*:not(#printArea){display:none!important}
+  body.printing{background:#fff!important;color:#000!important;min-height:0}
+  body.printing #printArea{display:block!important;color:#000;background:#fff;font-family:Arial,Helvetica,sans-serif;font-size:11pt;line-height:1.35}
+  #printArea h1{font-size:18pt;margin:0 0 .2rem}
+  #printArea .pr-sub{margin:0 0 .6rem;color:#333}
+  #printArea .pr-month{margin:.9rem 0 .25rem;font-size:13pt;border-bottom:2px solid #000;padding-bottom:.1rem}
+  #printArea .pr-ev{padding:.25rem 0;border-bottom:1px solid #bbb;page-break-inside:avoid}
+  #printArea .pr-dl{font-weight:700}
+  #printArea .pr-note{color:#333;font-size:10pt}
+  #printArea .pr-foot{margin-top:1rem;font-size:9.5pt;color:#333;border-top:1px solid #000;padding-top:.4rem}
+}
 @media print{nav.tabs,header.top .hbtn,.composer,.chips,details.years{display:none!important}main{padding-bottom:1rem}}
 </style>
 </head>
@@ -222,6 +247,11 @@ legend{font-weight:700;padding:0 .3rem}
 
 <main id="main" tabindex="-1">
 
+  <div class="install-banner" id="installBanner">
+    <div><strong>📲 Put this on your phone’s home screen</strong><br><span class="small">It then opens like an app. Takes about 20 seconds.</span></div>
+    <div class="ib-btns"><button class="btn" id="installHow" type="button">Show me how</button><button class="btn ghost small" id="installLater" type="button" aria-label="Hide this message">Not now</button></div>
+  </div>
+
   <details class="years" id="yearsBox">
     <summary id="yearsSummary">Which year group(s) do you need information for? (optional)</summary>
     <p class="muted small" style="margin:.2rem 0">Pick as many as you like. We’ll show the most relevant dates and answers first.</p>
@@ -238,7 +268,7 @@ legend{font-weight:700;padding:0 .3rem}
       <button class="btn" id="send" type="button">Ask</button>
     </div>
     <div style="margin-top:.5rem;display:flex;gap:.5rem;flex-wrap:wrap">
-      <button class="btn ghost small" id="clear" type="button" hidden>Clear conversation</button>
+      <button class="btn ghost" id="clear" type="button" hidden>🏠 Start again</button>
     </div>
     <div class="log" id="log" role="log" aria-live="polite" aria-label="Conversation"></div>
     <div class="card">
@@ -246,6 +276,10 @@ legend{font-weight:700;padding:0 .3rem}
       <div class="chips" id="quickChips"></div>
     </div>
     <div class="notice" id="aiNotice">Type a question and you’ll get the most relevant passages from the school’s letters and newsletters, with the source and date shown. Dates can change, so please check Arbor or the school before relying on a deadline.</div>
+    <div class="card" id="newsTeaser">
+      <h3>Latest news</h3>
+      <div id="newsTeaserList"></div>
+    </div>
     <div class="card" id="soon">
       <h3>Coming up soon</h3>
       <div id="soonList"></div>
@@ -253,6 +287,18 @@ legend{font-weight:700;padding:0 .3rem}
     <div class="card" style="margin-top:1.1rem">
       <h3>Something missing or wrong?</h3>
       <p class="small muted" style="margin-top:0">Can’t find a letter, or spotted an out-of-date date? Ask for it to be added or fixed.</p>
+      <button class="btn ghost" type="button" data-suggest>✉ Ask for something to be added</button>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section class="panel" id="p-news" role="tabpanel" aria-labelledby="t-news" hidden>
+    <h2 id="h-news">Latest news</h2>
+    <p class="muted small" style="margin-top:0">The newest letters, newsletters and flyers from school and the PTA, newest first. Tap “Read the full details” to see everything.</p>
+    <div id="newsFeed"></div>
+    <div class="card" style="margin-top:1.1rem">
+      <h3>Seen something that isn’t here?</h3>
+      <p class="small muted" style="margin-top:0">Ask for a new letter or flyer to be added.</p>
       <button class="btn ghost" type="button" data-suggest>✉ Ask for something to be added</button>
     </div>
   </section>
@@ -277,6 +323,25 @@ legend{font-weight:700;padding:0 .3rem}
       <button class="chip" id="onlyMine" type="button" aria-pressed="false">Only my year groups</button>
       <button class="chip" id="showPast" type="button" aria-pressed="false">Show past dates</button>
       <button class="btn ghost small" id="addAll" type="button">Add all shown to calendar (.ics)</button>
+      <button class="btn ghost small" id="printDates" type="button">🖨 Print my dates</button>
+    </div>
+    <div class="card" id="subCard" hidden>
+      <h3>📅 Keep these dates in your phone’s calendar</h3>
+      <p class="small muted" style="margin-top:0">Subscribe once and new dates appear in your own calendar automatically whenever this app is updated. Calendar apps refresh by themselves, so a change can take several hours to show.</p>
+      <label for="subYear">Which dates?</label>
+      <select id="subYear"></select>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem">
+        <a class="btn" id="subLink" href="#" style="text-decoration:none;display:inline-flex;align-items:center">Subscribe</a>
+        <button class="btn ghost" id="subCopy" type="button">Copy link</button>
+      </div>
+      <p class="small muted" id="subMsg" role="status" style="margin-bottom:0"></p>
+      <details style="margin-top:.4rem">
+        <summary style="cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:700">Not working? Step-by-step help</summary>
+        <p class="small"><strong>iPhone or iPad:</strong> tap Subscribe, then “Subscribe” in the Calendar window that opens.</p>
+        <p class="small"><strong>Android or Google Calendar:</strong> tap “Copy link”. On a computer, open Google Calendar, click + next to “Other calendars”, choose “From URL”, paste the link and click “Add calendar”. It then appears on your phone.</p>
+        <p class="small"><strong>Outlook:</strong> Add calendar, then Subscribe from web, and paste the link.</p>
+        <p class="small">Children in two year groups? Subscribe once for each.</p>
+      </details>
     </div>
     <p class="muted small" id="datesNote" style="margin:.2rem 0 .6rem"></p>
     <div id="dates"></div>
@@ -316,11 +381,33 @@ legend{font-weight:700;padding:0 .3rem}
 <nav class="tabs" aria-label="Sections">
   <div class="in" role="tablist" aria-label="Sections">
     <button role="tab" id="t-ask" aria-controls="p-ask" aria-selected="true" data-tab="ask" type="button"><span class="ic" aria-hidden="true">💬</span>Ask</button>
+    <button role="tab" id="t-news" aria-controls="p-news" aria-selected="false" data-tab="news" type="button" tabindex="-1"><span class="ic" aria-hidden="true">📰</span>News</button>
     <button role="tab" id="t-search" aria-controls="p-search" aria-selected="false" data-tab="search" type="button" tabindex="-1"><span class="ic" aria-hidden="true">🔎</span>Search</button>
     <button role="tab" id="t-dates" aria-controls="p-dates" aria-selected="false" data-tab="dates" type="button" tabindex="-1"><span class="ic" aria-hidden="true">📅</span>Dates</button>
     <button role="tab" id="t-contacts" aria-controls="p-contacts" aria-selected="false" data-tab="contacts" type="button" tabindex="-1"><span class="ic" aria-hidden="true">☎️</span>Contacts</button>
   </div>
 </nav>
+
+<dialog id="installDlg" aria-labelledby="idTitle">
+  <h2 id="idTitle">Put this on your home screen</h2>
+  <p class="muted small" style="margin-top:0">Then it opens like an app, with its own icon. No app store needed.</p>
+  <button class="btn" id="installBtn2" type="button" hidden>📲 Install this app</button>
+  <h3>iPhone or iPad</h3>
+  <ol>
+    <li>Open this page in <strong>Safari</strong> (not inside WhatsApp, Facebook or an email).</li>
+    <li>Tap the <strong>Share</strong> button: a square with an arrow pointing up. If you can’t see it, tap the <strong>… (three dots)</strong> in the bottom bar first, then Share.</li>
+    <li>Scroll down and tap <strong>Add to Home Screen</strong> (tap “View More” first if you can’t see it).</li>
+    <li>Tap <strong>Add</strong> at the top right.</li>
+  </ol>
+  <h3>Android phone</h3>
+  <ol>
+    <li>Open this page in <strong>Chrome</strong>.</li>
+    <li>Tap the <strong>⋮ (three dots)</strong> at the top right.</li>
+    <li>Tap <strong>Install app</strong> or <strong>Add to Home screen</strong>.</li>
+    <li>Tap <strong>Install</strong> or <strong>Add</strong>.</li>
+  </ol>
+  <button class="btn ghost" id="installClose" type="button">Close</button>
+</dialog>
 
 <dialog id="suggest" aria-labelledby="sgTitle">
   <h2 id="sgTitle">Ask for something to be added</h2>
@@ -376,6 +463,8 @@ legend{font-weight:700;padding:0 .3rem}
     <button class="btn ghost" id="a11yReset" type="button">Reset to defaults</button>
   </div>
 </dialog>
+
+<div id="printArea" aria-hidden="true"></div>
 
 <script>
 (function(){
@@ -444,10 +533,10 @@ function applyS(){
 function K(id,title,topic,years,src,dl,kw,text){return{id,title,topic,years,src,dl,kw,text:text.trim()}}
 const P=[0,1,2,3,4,5,6];
 const KB=[
-K("contacts","Contact details: phone and emails","Contacts",null,"Parent Information Pack 2026–27 (and later letters)","Sept–Oct 2026","contact phone email address reception number call who enquiries office safeguarding",
+K("contacts","Contact details: phone and emails","Contacts",null,"Parent Information Pack 2026–27 (and later letters)","Sept–Oct 2026","contact phone email address reception number call who enquiries office safeguarding twitter x social media address postcode",
 `Main reception and emergencies: 0191 580 2700. If you need to reach your child in an emergency, contact reception rather than your child’s phone.
 Email by phase: Reception–Year 4: first@kps.woodard.co.uk · Years 5–8: middle@kps.woodard.co.uk · Years 9–11: senior@kps.woodard.co.uk · Sixth Form: sixthform@kps.woodard.co.uk.
-General enquiries: enquiries@kps.woodard.co.uk. Safeguarding: safeguarding@kps.woodard.co.uk. Online safety: e-safety@kps.woodard.co.uk.
+General enquiries: enquiries@kps.woodard.co.uk (the school’s letterhead also shows KPSenquiryline@kps.woodard.co.uk). Address: Kings Priory School, Huntington Place, Tynemouth, Tyne and Wear, NE30 4RF. School on X: https://x.com/KingsPriory. Safeguarding: safeguarding@kps.woodard.co.uk. Online safety: e-safety@kps.woodard.co.uk.
 Year 8 Sparx Reader letter gave: kpsheadmiddleschool@kps.woodard.co.uk.
 Websites: https://www.kingsprioryschool.co.uk/ and the curriculum site https://www.kingspriorycurriculum.co.uk/
 Help with meal payments: Years 3–4, Sarah Hogg at the First School office; Huntington Place, your child’s Administrator.`),
@@ -458,7 +547,7 @@ Please allow push notifications in the app so you get messages quickly.
 Prefer a browser? Use the school-specific link: https://kings-priory-school.uk.arbor.education/?/home-ui/index (needed if your children are at different schools that also use Arbor).
 First-time login guide from Arbor: https://support.arbor-education.com/hc/en-us/articles/360020147458-Logging-In-to-the-Parent-Portal-Parent-App
 ClassCharts is no longer used. Everything now comes home via Arbor, including telling the school about absences (Newsletter, 18 Sept 2026).
-Phone pouches are bought in the shop in the Parent Arbor app (see the phone pouch entry).`),
+Phone pouches are bought in the shop in the Parent Arbor app (see the phone pouch entry). Behaviour points now show as separate positive and negative scales (see the behaviour points entry).`),
 
 K("day-times","School day times","Dates & times",null,"Parent Information Pack 2026–27","Sept 2026","start finish end time day hours gates registration home pick up 2.45 3.45 early finish",
 `Start (registration) and finish times:
@@ -575,6 +664,12 @@ K("behaviour","Behaviour expectations and detentions","Behaviour & attendance",n
 Detentions: Level 3 – 15 minutes after school, same day, after two corrections in class. Level 4 – 30 minutes after school, same day, if removed from a lesson. Lateness detention (30 minutes, in the school day) if late three times in a half-term. Homework detention – in the school day; missing it becomes an after-school detention. Maximum 30 minutes of detention a day; more than that escalates to P4L the next day. Parents are told of after-school detentions via Arbor.
 Year 7 only (newsletter 18 Sept): from the following week, two lates in a week (collated Wednesday to Wednesday) means a detention.
 Full policy: see the Behaviour Expectations policy on the school website.`),
+
+K("behaviour-points","Behaviour points on the Arbor Parent App: now two scales","Behaviour & attendance",null,"Letter: Update to how behaviour points are displayed on the Parent App","Autumn 2026 (undated letter, after October half-term)","behaviour points positive negative arbor parent app net score rewards shop first half term achievement class charts classcharts merits data lost",
+`The Arbor Parent App now shows two separate scales, positive points and negative points, instead of one combined “net” score. The school says this gives a clearer breakdown of your child’s achievements alongside any areas where they may need extra support.
+Some of your child’s points from the first half term may no longer show in the app. No data has been lost: all historic information is archived in the school system. Positive points earned in the first half term are saved and will be available for pupils to spend when the Rewards Shop opens later this half term.
+The school will explain how the Rewards system will work, now that Class Charts is no longer used, in due course.
+No action is needed from parents. This only changes how the data is displayed on your screen.`),
 
 K("equipment","Equipment list (Year 5 and above)","Uniform & kit",[5,6,7,8,9,10,11,12,13],"Parent Information Pack 2026–27","Sept 2026","equipment pencil case calculator casio ruler protractor reading book pens compass water bottle",
 `Essential: reading book, pencil case, at least 2 pens, pencil, eraser, sharpener, ruler, protractor, and a Casio FX-83 or FX-85 (solar) scientific calculator (Year 7 and above).
@@ -771,6 +866,22 @@ E("2027-07-12","Class teacher reports (Reception–Year 6) and Extended Grade Ca
 E("2027-07-14","School closes for summer",{time:"14:45",src:"Parent Information Pack"})
 ];
 
+/* ============ DATA: latest news ============ */
+function N(id,sort,date,tag,years,title,text,src,kb){return{id,sort,date,tag,years,title,text,src,kb}}
+const NEWS=[
+N("n-cards","2026-11-02","2 Nov 2026","PTA",P,"Christmas card artwork due back on Tuesday 3 November","A new company, School Fundraising, will print children’s own designs onto cards, mugs, gift tags and coasters, and give some of the money to the PTA. Return the artwork to school by Tuesday 3 November with your child’s name and class code on it, and no glitter. Order forms come home via class teachers, and delivery is promised for the first week of December.","PTA flyer: Christmas Cards","pta-cards"),
+N("n-points","2026-11-02","Letter undated · added 2 Nov","School",null,"Behaviour points on Arbor now show positive and negative separately","The Arbor Parent App now shows two scales instead of one combined score. Some first-half-term points may not show, but nothing has been lost, and positive points will be spendable when the Rewards Shop opens later this half term. No action is needed.","Letter: Update to how behaviour points are displayed","behaviour-points"),
+N("n-fair","2026-11-02","2 Nov 2026","PTA",null,"PTA Christmas Fair: Sunday 6 December, donations wanted","11:00–14:00 on the First School site. The pre-loved toy stall needs good-quality toys, games, children’s books and Christmas outfits. Tombola and raffle prizes and volunteers are also wanted. Christmas tree collection is 10:30–14:30 (pre-orders closed on 26 October).","PTA flyers: Christmas Fair and Xmas Tree Sale","pta-christmas"),
+N("n-pouch","2026-10-16","16 Oct 2026","School",[5,6,7,8,9,10,11],"Phone pouches start Monday 9 November (Years 5–11)","If your child brings a phone or smart device, buy a £10 pouch in the Arbor shop by Friday 6 November. Devices must be locked in the pouch before entering the school site and stay locked all day.","Letter: Mobile Phone Pouches","phones-pouch"),
+N("n-pe","2026-10-14","14 Oct 2026","School",P,"Parents’ evening: book by Friday 6 November (Reception–Year 6)","Evenings are Tuesday 10 and Thursday 19 November, 3:50–6:40pm, with 10-minute appointments booked on SchoolCloud. Booking closes on Friday 6 November at 6pm.","Letter: Parents’ Evening Reception–Year 6","pe-primary"),
+N("n-halloween","2026-10-20","Oct 2026 (poster)","Events",P,"Spooky Halloween writing competition","Write a suspense story with a local history element and hand it to your class teacher by 6 November. The winner will be audio narrated and published. A list of local myths and legends for ideas is in this app.","Poster: Spooky Halloween Writing Competition","halloween"),
+N("n-agm","2026-10-19","Oct 2026","PTA",null,"PTA AGM: Tuesday 17 November, 12:00–13:00","On the First School site. Everyone is welcome. Committee roles are up for election and new volunteers are wanted.","PTA AGM notice","pta-agm"),
+N("n-clubs","2026-10-17","Oct 2026","Clubs",[5,6,7,8,9,10,11,12,13],"Autumn Term 2 clubs timetable","Before-school, after-school and lunchtime clubs for Years 5–13 are listed in this app. Paid activities are booked and paid for on Arbor, and lunchtime clubs are free drop-in.","Enrichment posters, Autumn Term 2","clubs-after"),
+N("n-xmas","2026-10-05","Autumn term key dates sheet","School",P,"Primary Christmas performances and pantomime visits","Performances run from 1 to 10 December, and pantomime visits are on 11, 14 and 15 December. Dates for each year group are in this app.","Primary Key Dates sheet (Autumn Term 2026)","primary-dates")
+];
+function isNew(n){return(startOfToday()-pd(n.sort))/DAY<=7}
+function newsFor(){return NEWS.filter(n=>matchesYears(n.years)).sort((a,b)=>b.sort.localeCompare(a.sort))}
+
 /* ============ shared state ============ */
 const cap={sample:null,db:null,downloads:null,user:null,uid:null,canWrite:null,isOwner:false};
 let updates=[]; // parent-added: {id,authorId,title,text,date,years,at}
@@ -812,7 +923,7 @@ contact:["email","phone","who"],email:["contact"],number:["phone","contact"],
 safeguarding:["welfare","dsl","concern"],worried:["safeguarding","concern","welfare"],bullying:["behaviour","online","safeguarding"],
 whatsapp:["online","group","chat"],snapchat:["online","chat"],
 pta:["fundraising","disco","fair","wreath","tree"],disco:["pta"],fair:["pta","christmas"],
-christmas:["panto","nativity","performance","christingle","fair","cards","tree"],cards:["christmas","artwork","fundraising"],artwork:["christmas","cards"],mug:["christmas","cards"],mugs:["christmas","cards"],glitter:["cards","artwork"],nativity:["christmas","performance"],play:["performance","christmas"],
+points:["behaviour","rewards","arbor"],point:["behaviour","rewards"],rewards:["points","shop","behaviour"],merits:["points","rewards"],classcharts:["arbor","points","behaviour"],twitter:["x"],x:["social"],christmas:["panto","nativity","performance","christingle","fair","cards","tree"],cards:["christmas","artwork","fundraising"],artwork:["christmas","cards"],mug:["christmas","cards"],mugs:["christmas","cards"],glitter:["cards","artwork"],nativity:["christmas","performance"],play:["performance","christmas"],
 detention:["behaviour","late"],report:["grade","reports"],grade:["card","report"],
 login:["arbor","sparx","password"],password:["login","reset"],
 free:["fsm","universal"],fsm:["free","meals"],trip:["residential","visit"],residential:["trip","robinwood"],
@@ -890,13 +1001,14 @@ function markInto(el,text,words){
 }
 
 /* ============ tabs ============ */
-const TABS=["ask","search","dates","contacts"];
+const TABS=["ask","news","search","dates","contacts"];
 function showTab(name,focus){
   TABS.forEach(t=>{
     const on=t===name;
     $("#p-"+t).hidden=!on;
     const b=$("#t-"+t);b.setAttribute("aria-selected",on?"true":"false");b.tabIndex=on?0:-1;
   });
+  if(name==="news")renderNewsTab();
   if(name==="dates")renderDates();
   if(name==="contacts")renderContacts();
   if(focus){const hd=$("#h-"+name);if(hd){hd.tabIndex=-1;hd.focus({preventScroll:false})}}
@@ -927,11 +1039,41 @@ function renderYearChips(){
   $("#yearsSummary").textContent=arr.length?"Showing: "+yl(arr)+" (tap to change)":"Which year group(s) do you need information for? (optional)";
 }
 function refreshAll(){
-  renderSoon();
+  renderSoon();renderNewsTeaser();
+  if(!$("#p-news").hidden)renderNewsTab();
   if(!$("#p-dates").hidden)renderDates();
   if(!$("#p-search").hidden)runSearch();
+  if(typeof syncSub==="function"&&!$("#subCard").hidden)syncSub();
 }
 
+/* ============ latest news ============ */
+function newsCard(n){
+  const card=h("article",{class:"result"},
+    h("h3",{},n.title),
+    h("div",{class:"meta"},isNew(n)?h("span",{class:"tag new"},"New"):null,h("span",{class:"tag"},n.tag),h("span",{class:"tag"},yl(n.years)),h("span",{},n.date)),
+    h("div",{class:"txt"},n.text),
+    h("div",{class:"meta"},"Source: "+n.src));
+  const b=h("button",{class:"btn ghost small",type:"button",style:"margin-top:.4rem"},"Read the full details");
+  b.addEventListener("click",()=>goToDoc(n.kb));card.append(b);
+  return card;
+}
+function renderNewsTab(){
+  const box=$("#newsFeed");box.textContent="";
+  const soon=allEvents().filter(e=>e.deadline&&!isPast(e)&&evStart(e)-startOfToday()<=7*DAY&&matchesYears(e.years)).sort((a,b)=>evStart(a)-evStart(b));
+  if(soon.length){box.append(h("h3",{class:"dayhead"},"Deadlines in the next 7 days"));soon.forEach(e=>box.append(eventRow(e,{cal:true})))}
+  box.append(h("h3",{class:"dayhead"},"Latest from school and the PTA"));
+  const list=newsFor();
+  if(!list.length)box.append(h("p",{class:"empty"},"No news for your selected year groups yet."));
+  list.forEach(n=>box.append(newsCard(n)));
+}
+function renderNewsTeaser(){
+  const box=$("#newsTeaserList");box.textContent="";
+  const list=newsFor().slice(0,3);
+  if(!list.length){box.append(h("p",{class:"empty"},"No news for your selected year groups yet."));return}
+  list.forEach(n=>box.append(h("div",{class:"newsrow"},h("strong",{},n.title),h("div",{class:"meta"},(isNew(n)?"NEW · ":"")+n.date+" · "+n.tag))));
+  const b=h("button",{class:"btn ghost small",type:"button",style:"margin-top:.4rem"},"See all news");
+  b.addEventListener("click",()=>showTab("news",true));box.append(b);
+}
 /* ============ ask: soon list + chips ============ */
 function eventRow(e,opts){
   const d=evStart(e);const o=opts||{};
@@ -1106,14 +1248,24 @@ function ask(q){
     sb.addEventListener("click",()=>speak(spoken,sb));tools.append(sb);
     if(S.autoread)speak(spoken,sb);
   }
-  if(tools.children.length)bot.m.append(tools);
+  const home=h("button",{class:"btn ghost small",type:"button"},"🏠 Start again");home.addEventListener("click",startAgain);tools.append(home);
+  bot.m.append(tools);
   bot.m.append(h("p",{class:"meta"},"Taken straight from the school’s documents. Dates can change, so check Arbor or the school for anything important."));
   history.push(q);
   bot.m.scrollIntoView({block:"nearest"});
 }
 $("#send").addEventListener("click",()=>ask($("#q").value));
 $("#q").addEventListener("keydown",e=>{if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();ask($("#q").value)}});
-$("#clear").addEventListener("click",()=>{history.length=0;$("#log").textContent="";$("#clear").hidden=true;try{window.speechSynthesis&&window.speechSynthesis.cancel()}catch(e){}});
+function startAgain(){
+  history.length=0;$("#log").textContent="";$("#clear").hidden=true;$("#q").value="";
+  try{window.speechSynthesis&&window.speechSynthesis.cancel()}catch(e){}
+  $("#sq").value="";topicFilter="All";renderTopicChips();runSearch();
+  onlyMine=false;showPast=false;
+  showTab("ask",false);
+  try{$("#q").focus({preventScroll:true})}catch(e){}
+  window.scrollTo(0,0);
+}
+$("#clear").addEventListener("click",startAgain);
 
 /* voice input */
 (function(){
@@ -1289,6 +1441,66 @@ $("#onlyMine").addEventListener("click",()=>{onlyMine=!onlyMine;renderDates()});
 $("#showPast").addEventListener("click",()=>{showPast=!showPast;renderDates()});
 $("#addAll").addEventListener("click",e=>{const l=shownEvents().filter(x=>!isPast(x));if(l.length)saveIcs(l,"kps-dates.ics",e.currentTarget)});
 
+/* ============ calendar subscription + print ============ */
+const FEEDS=[["all","All school dates (every year group)","kps-dates-all.ics"],[0,"Reception","kps-dates-reception.ics"]].concat(Array.from({length:13},(_,i)=>[i+1,"Year "+(i+1),"kps-dates-year-"+(i+1)+".ics"]));
+function feedUrl(file){try{return new URL(file,location.href)}catch(e){return null}}
+function updateSub(){
+  const u=feedUrl($("#subYear").value);if(!u)return;
+  $("#subLink").setAttribute("href","webcal://"+u.host+u.pathname);
+  $("#subMsg").textContent="";
+}
+function syncSub(){
+  const sel=$("#subYear");if(!sel.options.length)return;
+  const first=Array.from(selYears).sort((a,b)=>a-b)[0];
+  if(first!==undefined){const f=FEEDS.find(x=>x[0]===first);if(f)sel.value=f[2]}
+  updateSub();
+}
+function initSub(){
+  const sel=$("#subYear");
+  FEEDS.forEach(f=>sel.append(h("option",{value:f[2],text:f[1]})));
+  sel.addEventListener("change",updateSub);
+  $("#subCopy").addEventListener("click",async()=>{
+    const u=feedUrl(sel.value);if(!u)return;
+    try{await navigator.clipboard.writeText(u.href);$("#subMsg").textContent="Link copied. Paste it into your calendar app’s “add by URL” option."}
+    catch(e){$("#subMsg").textContent="Couldn’t copy automatically. The link is: "+u.href}
+  });
+  syncSub();
+}
+(function probeFeeds(){
+  const u=feedUrl("kps-dates-all.ics");
+  if(!u||location.protocol.indexOf("http")!==0)return;
+  try{
+    fetch(u.href,{method:"HEAD",cache:"no-store"}).then(r=>{if(r.ok){$("#subCard").hidden=false;initSub()}}).catch(()=>{});
+  }catch(e){}
+})();
+function buildPrint(){
+  const area=$("#printArea");area.textContent="";
+  const yrs=Array.from(selYears).sort((a,b)=>a-b);
+  const upd=($(".updated")||{textContent:""}).textContent.replace("Last updated: ","");
+  area.append(h("h1",{},"KPS dates and deadlines"));
+  area.append(h("p",{class:"pr-sub"},(yrs.length?"For: "+yl(yrs):"Whole school (all year groups)")+(upd?" · Updated "+upd:"")));
+  const list=upcoming(yrs.length>0);
+  let month="";
+  list.forEach(e=>{
+    const d=evStart(e);const m=d.toLocaleDateString("en-GB",{month:"long",year:"numeric"});
+    if(m!==month){month=m;area.append(h("div",{class:"pr-month"},m))}
+    let when=fmtDate(d);if(e.end)when+=" – "+fmtDate(pd(e.end));if(e.time)when+=", "+e.time+(e.until?"–"+e.until:"");
+    area.append(h("div",{class:"pr-ev"},
+      h("span",{class:e.deadline?"pr-dl":""},(e.deadline?"DEADLINE · ":"")+when+": "),e.title,
+      e.where?h("div",{class:"pr-note"},"Where: "+e.where):null,
+      e.note?h("div",{class:"pr-note"},e.note):null));
+  });
+  if(!list.length)area.append(h("p",{},"No upcoming dates."));
+  area.append(h("div",{class:"pr-foot"},"Made by a school family. Not an official school service. Dates can change, so please check Arbor or the school before relying on them."));
+}
+$("#printDates").addEventListener("click",()=>{
+  buildPrint();document.body.classList.add("printing");
+  const done=()=>{document.body.classList.remove("printing");window.removeEventListener("afterprint",done)};
+  window.addEventListener("afterprint",done);
+  try{window.print()}catch(e){}
+  setTimeout(done,2000);
+});
+
 /* ============ contacts tab ============ */
 let contactsDone=false;
 function renderContacts(){
@@ -1311,6 +1523,7 @@ function renderContacts(){
   [["Arbor (web login for this school)","https://kings-priory-school.uk.arbor.education/?/home-ui/index"],
    ["SchoolCloud: book parents’ evening (Reception–Year 6)","https://kingsprioryschool.schoolcloud.co.uk/"],
    ["School website","https://www.kingsprioryschool.co.uk/"],
+   ["Kings Priory School on X (formerly Twitter)","https://x.com/KingsPriory"],
    ["Curriculum website","https://www.kingspriorycurriculum.co.uk/"],
    ["Sparx Maths: parent information","https://sparxmaths.com/parents/"],
    ["North Tyneside Council: free school meals","https://my.northtyneside.gov.uk/category/238/free-school-meals"],
@@ -1377,19 +1590,27 @@ $("#sgCopy").addEventListener("click",async()=>{
 /* ============ install to home screen (progressive web app) ============ */
 let deferredPrompt=null;
 const isStandalone=(window.matchMedia&&window.matchMedia("(display-mode: standalone)").matches)||window.navigator.standalone===true;
-window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("#installBtn").hidden=false});
-$("#installBtn").addEventListener("click",async()=>{
+function hideInstallUi(){["#installCard","#installBanner"].forEach(sel=>{const el=$(sel);if(el)el.hidden=true})}
+async function doInstall(){
   if(!deferredPrompt)return;
   try{deferredPrompt.prompt();await deferredPrompt.userChoice}catch(e){}
-  deferredPrompt=null;$("#installBtn").hidden=true;
-});
-window.addEventListener("appinstalled",()=>{$("#installCard").hidden=true});
-if(isStandalone)$("#installCard").hidden=true;
+  deferredPrompt=null;$("#installBtn").hidden=true;$("#installBtn2").hidden=true;
+}
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();deferredPrompt=e;$("#installBtn").hidden=false;$("#installBtn2").hidden=false});
+$("#installBtn").addEventListener("click",doInstall);
+$("#installBtn2").addEventListener("click",doInstall);
+window.addEventListener("appinstalled",hideInstallUi);
+if(isStandalone)hideInstallUi();
+else if(store.get("kps-install-dismissed")==="1")$("#installBanner").hidden=true;
+const iDlg=$("#installDlg");
+$("#installHow").addEventListener("click",()=>{if(iDlg.showModal)iDlg.showModal();else iDlg.setAttribute("open","")});
+$("#installClose").addEventListener("click",()=>iDlg.close());
+$("#installLater").addEventListener("click",()=>{$("#installBanner").hidden=true;store.set("kps-install-dismissed","1")});
 try{if("serviceWorker" in navigator&&location.protocol.indexOf("http")===0){navigator.serviceWorker.register("sw.js").catch(()=>{})}}catch(e){}
 
 /* ============ init ============ */
 applyS();syncDlg();
-renderYearChips();renderQuick();renderSoon();renderTopicChips();runSearch();
+renderYearChips();renderQuick();renderSoon();renderNewsTeaser();renderTopicChips();runSearch();
 $("#soonList").closest(".card").querySelector("h3").textContent="Coming up soon";
 initCaps();
 })();

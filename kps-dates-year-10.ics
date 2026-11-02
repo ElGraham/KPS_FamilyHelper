@@ -1,0 +1,256 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//KPS Family Helper//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:KPS: Year 10 dates
+X-WR-CALDESC:Dates and deadlines for Year 10 from Kings Priory School let
+ ters (unofficial\, made by a school family). Check Arbor for changes.
+X-WR-TIMEZONE:Europe/London
+REFRESH-INTERVAL;VALUE=DURATION:PT12H
+X-PUBLISHED-TTL:PT12H
+BEGIN:VTIMEZONE
+TZID:Europe/London
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+0000
+TZOFFSETTO:+0100
+TZNAME:BST
+DTSTART:19700329T010000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:DAYLIGHT
+BEGIN:STANDARD
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0000
+TZNAME:GMT
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:2026-11-02-School-reopens-after-October-half-term@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20261102
+DTEND;VALUE=DATE:20261103
+SUMMARY:School reopens after October half-term
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-06-Buy-your-child-s-phone-pouch-in-the-Arbor-shop-10-@kps-fam
+ ily-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20261106
+DTEND;VALUE=DATE:20261107
+SUMMARY:DEADLINE: Buy your child’s phone pouch in the Arbor shop (£10)
+DESCRIPTION:Needed if your child brings a phone or smart device from 9 No
+ v. Source: Phone pouch letter\, 16 Oct. Dates can change\, so check Arbo
+ r.
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Deadline tomorrow
+TRIGGER:-P1D
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-09-Phone-pouches-start-Years-5-11-@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20261109
+DTEND;VALUE=DATE:20261110
+SUMMARY:Phone pouches start (Years 5–11)
+DESCRIPTION:Source: Phone pouch letter\, 16 Oct. Dates can change\, so ch
+ eck Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-17-PTA-AGM@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;TZID=Europe/London:20261117T120000
+DTEND;TZID=Europe/London:20261117T130000
+SUMMARY:PTA AGM
+LOCATION:Kings Priory First School site
+DESCRIPTION:Everyone welcome. Email the PTA if you plan to attend. Source
+ : PTA AGM notice. Dates can change\, so check Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-11-25-PTA-Wreath-Making-evening-1@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20261125
+DTEND;VALUE=DATE:20261126
+SUMMARY:PTA Wreath Making\, evening 1
+DESCRIPTION:25 places\, over 18s only\, usually sells out. Source: PTA Ne
+ wsletter. Dates can change\, so check Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-02-PTA-Wreath-Making-evening-2@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20261202
+DTEND;VALUE=DATE:20261203
+SUMMARY:PTA Wreath Making\, evening 2
+DESCRIPTION:25 places\, over 18s only. Source: PTA Newsletter. Dates can 
+ change\, so check Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-06-PTA-Christmas-Fair-and-Christmas-Tree-Sale@kps-family-help
+ er
+DTSTAMP:20261102T120000Z
+DTSTART;TZID=Europe/London:20261206T110000
+DTEND;TZID=Europe/London:20261206T140000
+SUMMARY:PTA Christmas Fair and Christmas Tree Sale
+LOCATION:First School site (Percy Park)
+DESCRIPTION:Tree collection 10:30–14:30. Toys\, games\, books\, raffle 
+ and tombola prizes and volunteers wanted. Source: PTA Newsletter and fly
+ ers. Dates can change\, so check Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-14-Grade-Cards-Years-7-8-10-and-12@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20261214
+DTEND;VALUE=DATE:20261215
+SUMMARY:Grade Cards: Years 7\, 8\, 10 and 12
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2026-12-17-School-closes-for-Christmas@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;TZID=Europe/London:20261217T154500
+DTEND;TZID=Europe/London:20261217T164500
+SUMMARY:School closes for Christmas
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-01-05-School-reopens-after-Christmas@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270105
+DTEND;VALUE=DATE:20270106
+SUMMARY:School reopens after Christmas
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-12-School-closes-for-February-half-term@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;TZID=Europe/London:20270212T154500
+DTEND;TZID=Europe/London:20270212T164500
+SUMMARY:School closes for February half-term
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-22-School-reopens-after-February-half-term@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270222
+DTEND;VALUE=DATE:20270223
+SUMMARY:School reopens after February half-term
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-02-22-Year-10-mock-exams@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270222
+DTEND;VALUE=DATE:20270306
+SUMMARY:Year 10 mock exams
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-05-PTA-Special-Someone-event@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270305
+DTEND;VALUE=DATE:20270306
+SUMMARY:PTA “Special Someone” event
+DESCRIPTION:Source: PTA Newsletter. Dates can change\, so check Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-03-24-School-closes-for-Easter@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;TZID=Europe/London:20270324T154500
+DTEND;TZID=Europe/London:20270324T164500
+SUMMARY:School closes for Easter
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-12-School-reopens-after-Easter@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270412
+DTEND;VALUE=DATE:20270413
+SUMMARY:School reopens after Easter
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-13-Year-10-Mock-Exam-Grade-Card@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270413
+DTEND;VALUE=DATE:20270414
+SUMMARY:Year 10 Mock Exam Grade Card
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-04-14-Year-10-Parents-Evening@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270414
+DTEND;VALUE=DATE:20270415
+SUMMARY:Year 10 Parents’ Evening
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-03-School-closed-May-Day-bank-holiday@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270503
+DTEND;VALUE=DATE:20270504
+SUMMARY:School closed: May Day bank holiday
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-05-28-School-closes-for-May-half-term@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;TZID=Europe/London:20270528T154500
+DTEND;TZID=Europe/London:20270528T164500
+SUMMARY:School closes for May half-term
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-07-School-reopens-after-May-half-term@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270607
+DTEND;VALUE=DATE:20270608
+SUMMARY:School reopens after May half-term
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-06-18-PTA-Special-Someone-event@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270618
+DTEND;VALUE=DATE:20270619
+SUMMARY:PTA “Special Someone” event
+DESCRIPTION:Source: PTA Newsletter. Dates can change\, so check Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-07-12-Class-teacher-reports-Reception-Year-6-and-Extende@kps-fam
+ ily-helper
+DTSTAMP:20261102T120000Z
+DTSTART;VALUE=DATE:20270712
+DTEND;VALUE=DATE:20270713
+SUMMARY:Class teacher reports (Reception–Year 6) and Extended Grade Car
+ ds (Years 7–10)
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+BEGIN:VEVENT
+UID:2027-07-14-School-closes-for-summer@kps-family-helper
+DTSTAMP:20261102T120000Z
+DTSTART;TZID=Europe/London:20270714T144500
+DTEND;TZID=Europe/London:20270714T154500
+SUMMARY:School closes for summer
+DESCRIPTION:Source: Parent Information Pack. Dates can change\, so check 
+ Arbor.
+END:VEVENT
+END:VCALENDAR
