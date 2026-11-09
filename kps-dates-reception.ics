@@ -4,40 +4,9 @@ PRODID:-//KPS Family Helper//EN
 CALSCALE:GREGORIAN
 METHOD:PUBLISH
 BEGIN:VEVENT
-UID:2026-11-06-0-Halloween-story-competition-entries-due@kps-parent-helpe
- r
-DTSTAMP:20261106T163547Z
-DTSTART;VALUE=DATE:20261106
-DTEND;VALUE=DATE:20261107
-SUMMARY:Halloween story competition entries due
-DESCRIPTION:Hand to your class teacher. Suspense story with a local histo
- ry element. Source: Halloween poster. Dates can change – check Arbor.
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:Deadline
-TRIGGER:-P1D
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:2026-11-06-1-Last-chance-to-book-parents-evening-on-SchoolCloud@kps-p
- arent-helper
-DTSTAMP:20261106T163547Z
-DTSTART:20261106T180000
-DTEND:20261106T190000
-SUMMARY:Last chance to book parents’ evening on SchoolCloud (Reception–Ye
- ar 6)
-DESCRIPTION:Source: Parents’ Evening letter\, 14 Oct. Dates can change – 
- check Arbor.
-BEGIN:VALARM
-ACTION:DISPLAY
-DESCRIPTION:Deadline
-TRIGGER:-P1D
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:2026-11-10-2-Parents-Evening-Reception-Year-6-first-night@kps-parent-
+UID:2026-11-10-0-Parents-Evening-Reception-Year-6-first-night@kps-parent-
  helper
-DTSTAMP:20261106T163547Z
+DTSTAMP:20261109T155715Z
 DTSTART:20261110T155000
 DTEND:20261110T184000
 SUMMARY:Parents’ Evening (Reception–Year 6)\, first night
@@ -47,8 +16,8 @@ DESCRIPTION:10-minute appointments\, booked on SchoolCloud. Source: Paren
  ts’ Evening letter\, 14 Oct. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-17-3-Primary-Book-Fair@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-11-17-1-Primary-Book-Fair@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20261117
 DTEND;VALUE=DATE:20261121
 SUMMARY:Primary Book Fair
@@ -58,8 +27,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-17-4-PTA-AGM@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-11-17-2-PTA-AGM@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261117T120000
 DTEND:20261117T130000
 SUMMARY:PTA AGM
@@ -68,17 +37,17 @@ DESCRIPTION:Everyone welcome. Email the PTA if you plan to attend. Source
  : PTA AGM notice. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-19-5-First-School-instrumental-concert@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-11-19-3-First-School-instrumental-concert@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261119T093000
 DTEND:20261119T103000
 SUMMARY:First School instrumental concert
 DESCRIPTION:Source: Primary key dates. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-19-6-Parents-Evening-Reception-Year-6-second-night@kps-parent
+UID:2026-11-19-4-Parents-Evening-Reception-Year-6-second-night@kps-parent
  -helper
-DTSTAMP:20261106T163547Z
+DTSTAMP:20261109T155715Z
 DTSTART:20261119T155000
 DTEND:20261119T184000
 SUMMARY:Parents’ Evening (Reception–Year 6)\, second night
@@ -87,8 +56,8 @@ DESCRIPTION:Source: Parents’ Evening letter\, 14 Oct. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-20-7-North-Tyneside-Parent-Carer-Forum@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-11-20-5-North-Tyneside-Parent-Carer-Forum@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261120T090000
 DTEND:20261120T120000
 SUMMARY:North Tyneside Parent Carer Forum
@@ -97,8 +66,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-25-8-PTA-Wreath-Making-evening-1@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-11-25-6-PTA-Wreath-Making-evening-1@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261125T183000
 DTEND:20261125T203000
 SUMMARY:PTA Wreath Making\, evening 1
@@ -106,8 +75,8 @@ DESCRIPTION:25 places\, over 18s only\, usually sells out. Source: PTA Ne
  wsletter and Primary key dates. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-11-27-9-Reception-Cosy-Day@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-11-27-7-Reception-Cosy-Day@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20261127
 DTEND;VALUE=DATE:20261128
 SUMMARY:Reception Cosy Day
@@ -115,8 +84,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-02-10-PTA-Wreath-Making-evening-2@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-02-8-PTA-Wreath-Making-evening-2@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261202T183000
 DTEND:20261202T203000
 SUMMARY:PTA Wreath Making\, evening 2
@@ -124,9 +93,9 @@ DESCRIPTION:25 places\, over 18s only. Source: PTA Newsletter and Primary
   key dates. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-06-11-PTA-Christmas-Fair-and-Christmas-Tree-Sale@kps-parent-h
- elper
-DTSTAMP:20261106T163547Z
+UID:2026-12-06-9-PTA-Christmas-Fair-and-Christmas-Tree-Sale@kps-parent-he
+ lper
+DTSTAMP:20261109T155715Z
 DTSTART:20261206T110000
 DTEND:20261206T140000
 SUMMARY:PTA Christmas Fair and Christmas Tree Sale
@@ -136,24 +105,24 @@ DESCRIPTION:Tree collection 10:30–14:30. Toys\, games\, books\, raffle an
  s. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-09-12-Reception-Christmas-performance@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-09-10-Reception-Christmas-performance@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261209T093000
 DTEND:20261209T103000
 SUMMARY:Reception Christmas performance
 DESCRIPTION:Source: Primary key dates. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-10-13-Reception-Christmas-performance@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-10-11-Reception-Christmas-performance@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261210T140000
 DTEND:20261210T150000
 SUMMARY:Reception Christmas performance
 DESCRIPTION:Source: Primary key dates. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-14-14-Christmas-party-Reception-and-Year-1@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-14-12-Christmas-party-Reception-and-Year-1@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20261214
 DTEND;VALUE=DATE:20261215
 SUMMARY:Christmas party: Reception and Year 1
@@ -161,8 +130,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-14-15-Pantomime-visit-Reception@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-14-13-Pantomime-visit-Reception@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261214T101500
 DTEND:20261214T111500
 SUMMARY:Pantomime visit: Reception
@@ -171,8 +140,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-17-16-Carol-service-Reception-and-KS1@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-17-14-Carol-service-Reception-and-KS1@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261217T093000
 DTEND:20261217T103000
 SUMMARY:Carol service: Reception and KS1
@@ -181,8 +150,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-17-17-School-closes-for-Christmas@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-17-15-School-closes-for-Christmas@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20261217T154500
 DTEND:20261217T164500
 SUMMARY:School closes for Christmas
@@ -190,8 +159,8 @@ DESCRIPTION:The 6 Nov key dates sheet says “end of day”. Source: Parent I
  nformation Pack. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2026-12-18-18-INSET-day-school-closed@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2026-12-18-16-INSET-day-school-closed@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20261218
 DTEND;VALUE=DATE:20261219
 SUMMARY:INSET day: school closed
@@ -199,8 +168,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-01-04-19-INSET-day-school-closed@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-01-04-17-INSET-day-school-closed@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270104
 DTEND;VALUE=DATE:20270105
 SUMMARY:INSET day: school closed
@@ -208,8 +177,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-01-05-20-School-reopens-after-Christmas@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-01-05-18-School-reopens-after-Christmas@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270105
 DTEND;VALUE=DATE:20270106
 SUMMARY:School reopens after Christmas
@@ -217,8 +186,8 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-01-13-21-Reception-visit-to-Seven-Stories@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-01-13-19-Reception-visit-to-Seven-Stories@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270113
 DTEND;VALUE=DATE:20270114
 SUMMARY:Reception visit to Seven Stories
@@ -226,8 +195,8 @@ DESCRIPTION:Source: Primary key dates\, 6 Nov update. Dates can change –
  check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-02-12-22-School-closes-for-February-half-term@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-02-12-20-School-closes-for-February-half-term@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20270212T154500
 DTEND:20270212T164500
 SUMMARY:School closes for February half-term
@@ -235,9 +204,9 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-02-22-23-School-reopens-after-February-half-term@kps-parent-help
+UID:2027-02-22-21-School-reopens-after-February-half-term@kps-parent-help
  er
-DTSTAMP:20261106T163547Z
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270222
 DTEND;VALUE=DATE:20270223
 SUMMARY:School reopens after February half-term
@@ -245,25 +214,25 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-02-22-24-PTA-Spring-Disco-EYFS-Year-4@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-02-22-22-PTA-Spring-Disco-EYFS-Year-4@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270222
 DTEND;VALUE=DATE:20270223
 SUMMARY:PTA Spring Disco: EYFS–Year 4
 DESCRIPTION:Source: PTA Newsletter. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-03-05-25-PTA-Special-Someone-event@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-03-05-23-PTA-Special-Someone-event@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270305
 DTEND;VALUE=DATE:20270306
 SUMMARY:PTA “Special Someone” event
 DESCRIPTION:Source: PTA Newsletter. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-03-17-26-Spring-Parents-Evening-one-Reception-Year-6-@kps-parent
+UID:2027-03-17-24-Spring-Parents-Evening-one-Reception-Year-6-@kps-parent
  -helper
-DTSTAMP:20261106T163547Z
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270317
 DTEND;VALUE=DATE:20270318
 SUMMARY:Spring Parents’ Evening one (Reception–Year 6)
@@ -271,9 +240,9 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-03-23-27-Spring-Parents-Evening-two-Reception-Year-6-@kps-parent
+UID:2027-03-23-25-Spring-Parents-Evening-two-Reception-Year-6-@kps-parent
  -helper
-DTSTAMP:20261106T163547Z
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270323
 DTEND;VALUE=DATE:20270324
 SUMMARY:Spring Parents’ Evening two (Reception–Year 6)
@@ -281,8 +250,8 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-03-24-28-School-closes-for-Easter@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-03-24-26-School-closes-for-Easter@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20270324T154500
 DTEND:20270324T164500
 SUMMARY:School closes for Easter
@@ -290,8 +259,8 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-04-12-29-School-reopens-after-Easter@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-04-12-27-School-reopens-after-Easter@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270412
 DTEND;VALUE=DATE:20270413
 SUMMARY:School reopens after Easter
@@ -299,8 +268,8 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-05-03-30-School-closed-May-Day-bank-holiday@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-05-03-28-School-closed-May-Day-bank-holiday@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270503
 DTEND;VALUE=DATE:20270504
 SUMMARY:School closed: May Day bank holiday
@@ -308,8 +277,8 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-05-28-31-School-closes-for-May-half-term@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-05-28-29-School-closes-for-May-half-term@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20270528T154500
 DTEND:20270528T164500
 SUMMARY:School closes for May half-term
@@ -317,8 +286,8 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-06-07-32-School-reopens-after-May-half-term@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-06-07-30-School-reopens-after-May-half-term@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270607
 DTEND;VALUE=DATE:20270608
 SUMMARY:School reopens after May half-term
@@ -326,17 +295,17 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-06-18-33-PTA-Special-Someone-event@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-06-18-31-PTA-Special-Someone-event@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270618
 DTEND;VALUE=DATE:20270619
 SUMMARY:PTA “Special Someone” event
 DESCRIPTION:Source: PTA Newsletter. Dates can change – check Arbor.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-07-12-34-Class-teacher-reports-Reception-Year-6-and-Extende@kps-
+UID:2027-07-12-32-Class-teacher-reports-Reception-Year-6-and-Extende@kps-
  parent-helper
-DTSTAMP:20261106T163547Z
+DTSTAMP:20261109T155715Z
 DTSTART;VALUE=DATE:20270712
 DTEND;VALUE=DATE:20270713
 SUMMARY:Class teacher reports (Reception–Year 6) and Extended Grade Cards
@@ -345,8 +314,8 @@ DESCRIPTION:Source: Parent Information Pack. Dates can change – check Arb
  or.
 END:VEVENT
 BEGIN:VEVENT
-UID:2027-07-14-35-School-closes-for-summer@kps-parent-helper
-DTSTAMP:20261106T163547Z
+UID:2027-07-14-33-School-closes-for-summer@kps-parent-helper
+DTSTAMP:20261109T155715Z
 DTSTART:20270714T144500
 DTEND:20270714T154500
 SUMMARY:School closes for summer
